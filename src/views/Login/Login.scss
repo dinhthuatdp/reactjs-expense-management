@@ -1,0 +1,190 @@
+$login-form-color: #FFFFFF;
+$input-border-bottom-color: #CF43A4;
+$white-color: #FFF;
+$facebook-color: #4367B1;
+$google-color: #D64937;
+$social-text-color: #A4A2A4;
+$forgot-password-text-color: #A4A2A4;
+$forgot-password-hover-color: #CF43A4;
+$login-button-text-color: #FFC8FE;
+$background-linear-color-1: #AA44B1;
+$background-linear-color-2: #CF43A4;
+$background-linear-color-3: #F4429A;
+
+$desktop: 1280px;
+$lg: 1024px;
+$md1: 912px;
+$md: 768px;
+$sm: 568px;
+$ssm1: 414px;
+$ssm: 375px;
+
+@mixin MediaQuery($type) {
+    @media screen and (max-width:$type) {
+        @content;
+    }
+}
+
+.login-form {
+    width: 30rem;
+    height: 40rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    background-color: $login-form-color;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0.3rem;
+
+    @include MediaQuery($lg) {
+        width: 30rem;
+        height: 40rem;
+        transform: translate(-50%, -70%);
+    }
+
+    @include MediaQuery($md1) {
+        width: 30rem;
+        height: 40rem;
+        transform: translate(-50%, -70%);
+    }
+
+    @include MediaQuery($md) {
+        width: 22rem;
+        height: 33rem;
+        transform: translate(-50%, -50%);
+    }
+
+    @include MediaQuery($ssm1) {
+        width: 18rem;
+        height: 34rem;
+        transform: translate(-50%, -50%);
+    }
+
+    @include MediaQuery($ssm) {
+        width: 16rem;
+        height: 28rem;
+        transform: translate(-50%, -50%);
+    }
+
+    .login-text {
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: left;
+
+        .bottom-line {
+            height: 0.2rem;
+            width: 2rem;
+            background-image: linear-gradient(to right, $background-linear-color-1, $background-linear-color-2, $background-linear-color-3);
+        }
+    }
+
+    .login-form-inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+
+        .login-input {
+
+            padding: 0;
+            margin: 0;
+            background-color: transparent;
+            border: none;
+            border-bottom: .13rem solid $input-border-bottom-color;
+            width: 100%;
+            height: 2rem;
+            outline: none;
+        }
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $login-button-text-color;
+        border: none;
+        border-radius: 0.3rem;
+        background-image: linear-gradient(to right, $background-linear-color-1, $background-linear-color-2, $background-linear-color-3);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .forgot-password {
+        padding-top: 0.5rem;
+        text-align: right;
+        width: 100%;
+        color: $forgot-password-text-color;
+
+        &:hover {
+            cursor: pointer;
+            color: $forgot-password-hover-color;
+        }
+    }
+
+    .social-login {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+
+        .social-text {
+
+            text-align: center;
+            width: 100%;
+            color: $social-text-color;
+        }
+
+        .social-login-fb {
+            background-color: $facebook-color;
+            width: 100%;
+            text-align: start;
+            padding: 1rem 0;
+            color: $white-color;
+            border: none;
+            border-radius: 0.3rem;
+            background-image: none;
+
+            i {
+                width: 1.4rem;
+                color: $white-color;
+                font-size: 1.4rem;
+                padding: 0 1rem;
+            }
+
+            span {
+                font-weight: 100;
+            }
+        }
+
+        .social-login-gp {
+            background-color: $google-color;
+            width: 100%;
+            text-align: start;
+            padding: 1rem 0;
+            color: $white-color;
+            border: none;
+            border-radius: 0.3rem;
+            background-image: none;
+
+            i {
+                width: 1.4rem;
+                color: $white-color;
+                font-size: 1.4rem;
+                padding: 0 1rem;
+            }
+
+            span {
+                font-weight: 100;
+            }
+        }
+    }
+}
