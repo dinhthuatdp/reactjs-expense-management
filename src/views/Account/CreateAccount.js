@@ -1,0 +1,164 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import {
+    Link
+} from 'react-router-dom';
+import * as Yup from 'yup';
+
+import './CreateAccount.scss';
+import userActionCreators from '../../Store/Actions/UserActionCreators';
+import { Formik, ErrorMessage } from "formik";
+
+const INPUT_EMAIL_ID = 'inputEmailId';
+const INPUT_PASSWORD_ID = 'inputPasswordId';
+const INPUT_CONFIRM_PASSWORD_ID = 'inputConfirmPasswordId';
+
+class CreateAccount extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
+    }
+
+    handleInputChange = (e) => {
+        if (e.target.id === INPUT_EMAIL_ID) {
+            this.setState({
+                email: e.target.value
+            });
+        } else if (e.target.id === INPUT_CONFIRM_PASSWORD_ID) {
+            this.setState({
+                confirmPassword: e.target.value
+            });
+        } else if (e.target.id === INPUT_PASSWORD_ID) {
+            this.setState({
+                password: e.target.value
+            });
+        }
+    }
+
+    handleSignup = (email, password, confirmPassword) => {
+        const action = userActionCreators.signUp(email,
+            password,
+            confirmPassword);
+        this.props.signUp(action);
+    }
+
+    render() {
+        const formikProps = {
+            initialValues: initialValues,
+            validateOnBlur: true,
+            validateOnchange: true,
+            validationSchema: validationSchema,
+            onSubmit: async (formValues, { setSubmitting, resetForm }) => {
+                setSubmitting(true);
+                try {
+                    this.handleSignup(formValues.email, formValues.password, formValues.confirmPassword)
+                    resetForm(true);
+                } catch (e) {
+                    console.error(e);
+                }
+                console.log('>>>> check users:', this.props.users)
+            },
+        }
+
+        return (
+            <Formik {...formikProps} >
+                {props => (
+                    <form
+                        onSubmit={props.handleSubmit} className='create-acc-form'>
+                        <div className='create-acc-text'>
+                            Create Account
+                        </div>
+                        <div className='input-icons input-email'>
+                            <i className="icon fa-solid fa-envelope"></i>
+                            <input
+                                name='email'
+                                value={props.values.email}
+                                id={INPUT_EMAIL_ID}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                className='input-field'
+                                type='text'
+                                placeholder='Enter your email' />
+                            <ErrorMessage name='email' >
+                                {errMsg => <span className="error-message">{errMsg}</span>}
+                            </ErrorMessage>
+                        </div>
+                        <div className='input-icons input-password'>
+                            <i className="icon fa-solid fa-lock"></i>
+                            <input
+                                name='password'
+                                value={props.values.password}
+                                id={INPUT_PASSWORD_ID}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                className='input-field'
+                                type='password'
+                                placeholder='Enter your password' />
+                            <ErrorMessage name='password' >
+                                {errMsg => <span className="error-message">{errMsg}</span>}
+                            </ErrorMessage>
+                        </div>
+                        <div className='input-icons input-confirm-password'>
+                            <i className="icon fa-solid fa-check"></i>
+                            <input
+                                name='confirmPassword'
+                                value={props.values.confirmPassword}
+                                id={INPUT_CONFIRM_PASSWORD_ID}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                className='input-field'
+                                type='password'
+                                placeholder='Confirm password' />
+                            <ErrorMessage name='confirmPassword' >
+                                {errMsg => <span className="error-message">{errMsg}</span>}
+                            </ErrorMessage>
+                        </div>
+                        <button className='btn-sign-up'
+                            type='submit'>Sign up</button>
+
+                        <Link className='cancel' to='/'>Cancel</Link>
+                    </form>
+                )}
+            </Formik>
+        );
+    }
+}
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        users: state.users
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUp: (action) => dispatch(action)
+    }
+}
+
+const initialValues = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+}
+
+const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Email invalid').required('Email is required.'),
+    password: Yup.string().required('Please enter password'),
+    confirmPassword: Yup.string()
+        .required('Please enter confirm password')
+        .when('password', {
+            is: val => (val && val.length > 0 ? true : false),
+            then: Yup.string().oneOf(
+                [Yup.ref('password')],
+                'confirm password incorrect'
+            )
+        })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);

@@ -1,5 +1,7 @@
 const LOGIN = 'LOGIN';
+const SIGN_UP = 'SIGN_UP';
 
 export {
-    LOGIN
+    LOGIN,
+    SIGN_UP
 };

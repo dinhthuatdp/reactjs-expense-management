@@ -1,4 +1,4 @@
-import { LOGIN } from './ActionTypes';
+import { LOGIN, SIGN_UP } from './ActionTypes';
 
 const login = (user) => ({
     type: LOGIN,
@@ -8,6 +8,16 @@ const login = (user) => ({
     }
 })
 
+const signUp = (email, password, confirmPassword) => ({
+    type: SIGN_UP,
+    payload: {
+        email,
+        password,
+        confirmPassword
+    }
+})
+
 export default {
-    login
+    login,
+    signUp
 }
