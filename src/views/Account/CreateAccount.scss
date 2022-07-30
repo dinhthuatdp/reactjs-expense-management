@@ -1,0 +1,82 @@
+@import '../../Styles/variables';
+
+.create-acc-form {
+    border-radius: 0.3rem;
+    background-color: $white-color;
+    width: 40rem;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .create-acc-text {
+        color: $text-color;
+        padding-bottom: 3rem;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .input-icons {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 1rem;
+
+        i {
+            position: absolute;
+
+        }
+
+        .icon {
+            padding: 0.9rem 0;
+            min-width: 4rem;
+            font-size: 1.2rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem 3rem;
+            margin: 0;
+            border: none;
+            border-bottom: .13rem solid $input-border-bottom-color;
+            outline: none;
+            box-sizing: border-box;
+        }
+    }
+
+    .btn-sign-up {
+        padding: 1rem 0;
+        border: none;
+        border-radius: 0.3rem;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: $login-button-text-color;
+        background-image: linear-gradient(to right, $background-linear-color-1, $background-linear-color-2, $background-linear-color-3);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .cancel {
+        font-size: 0.8rem;
+        color: #A4A2A4;
+        position: absolute;
+        bottom: 1rem;
+        left: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .error-message {
+        color: red;
+        text-align: start;
+        width: 100%;
+        font-size: 1rem;
+        /* background-color: green; */
+        display: flex;
+        padding-top: 0.2rem;
+    }
+}

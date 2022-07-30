@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {
+    Link
+} from 'react-router-dom';
 
 import './Login.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators'
@@ -92,6 +95,10 @@ class Login extends React.Component {
                         <i className="fa-brands fa-google-plus-g"></i>
                         <span>Sign in With Google</span>
                     </div>
+                </div>
+                <div className='sign-up'>
+                    {/* <a href='#'>Sign up</a> */}
+                    <Link to='/sign-up'>Sign up</Link>
                 </div>
             </div>
         );
