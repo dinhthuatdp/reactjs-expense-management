@@ -160,7 +160,7 @@ class CreateAccount extends React.Component {
                             className={!props.isValid ? 'disable-button btn-sign-up' : 'btn-sign-up'}
                             type='submit'>Sign up</button>
 
-                        <Link className='cancel' to='/'>Cancel</Link>
+                        <Link className='cancel' to='/login'>Cancel</Link>
                     </form>
                 )}
             </Formik>

@@ -88,7 +88,7 @@ class Home extends React.Component {
                     </div>
                     <div className='actions-form'>
                         <div className='actions-left'>
-                            <Button variant="contained">Add Expense</Button>
+                            <Button className='btn-add' variant="contained">Add Expense</Button>
                         </div>
                         <div className='action-right'>
                             <input
@@ -104,6 +104,7 @@ class Home extends React.Component {
                     </div>
                     <div className='data'>
                         <DataGrid
+                            className='data-grid'
                             rows={rows}
                             columns={columns}
                             pageSize={5}
