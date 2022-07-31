@@ -1,82 +1,131 @@
-@import '../../Styles/variables';
+@import "../../Styles/variables";
+
+@mixin MediaQuery($type) {
+  @media screen and (max-width: $type) {
+    @content;
+  }
+}
 
 .create-acc-form {
-    border-radius: 0.3rem;
-    background-color: $white-color;
-    width: 40rem;
-    margin: 0 auto;
-    padding: 5rem 2rem;
-    gap: 1rem;
-    display: flex;
-    flex-direction: column;
+  border-radius: 0.3rem;
+  background-color: $white-color;
+  width: 30rem;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  @include MediaQuery($lg) {
+    width: 30rem;
+  }
+
+  @include MediaQuery($md1) {
+    width: 30rem;
+  }
+
+  @include MediaQuery($md) {
+    width: 22rem;
+  }
+
+  @include MediaQuery($ssm1) {
+    width: 18rem;
+  }
+
+  @include MediaQuery($ssm) {
+    width: 16rem;
+  }
+
+  .create-acc-text {
+    color: $text-color;
+    padding-bottom: 3rem;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .input-password {
     position: relative;
+    .icon-right {
+      min-width: 4rem;
+      font-size: 1.2rem;
+      right: 2rem;
+      top: 0.1rem;
+    }
+    .icon-right1 {
+      min-width: 4rem;
+      font-size: 1.2rem;
+      right: 2rem;
+      top: 1rem;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
-    .create-acc-text {
-        color: $text-color;
-        padding-bottom: 3rem;
-        font-size: 2rem;
-        font-weight: 600;
+  .input-icons {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 1rem;
+
+    i {
+      position: absolute;
     }
 
-    .input-icons {
-        width: 100%;
-        margin: 0;
-        margin-bottom: 1rem;
-
-        i {
-            position: absolute;
-
-        }
-
-        .icon {
-            padding: 0.9rem 0;
-            min-width: 4rem;
-            font-size: 1.2rem;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 1rem 3rem;
-            margin: 0;
-            border: none;
-            border-bottom: .13rem solid $input-border-bottom-color;
-            outline: none;
-            box-sizing: border-box;
-        }
+    .icon {
+      padding: 0.9rem 0;
+      min-width: 4rem;
+      font-size: 1.2rem;
     }
 
-    .btn-sign-up {
-        padding: 1rem 0;
-        border: none;
-        border-radius: 0.3rem;
-        font-size: 1.3rem;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: $login-button-text-color;
-        background-image: linear-gradient(to right, $background-linear-color-1, $background-linear-color-2, $background-linear-color-3);
-
-        &:hover {
-            cursor: pointer;
-        }
+    .input-field {
+      width: 100%;
+      padding: 1rem 3rem;
+      margin: 0;
+      border: none;
+      border-bottom: 0.13rem solid $input-border-bottom-color;
+      outline: none;
+      box-sizing: border-box;
     }
+  }
 
-    .cancel {
-        font-size: 0.8rem;
-        color: #A4A2A4;
-        position: absolute;
-        bottom: 1rem;
-        left: 0;
-        text-align: center;
-        width: 100%;
-    }
+  .btn-sign-up {
+    padding: 1rem 0;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: $login-button-text-color;
+    background-image: linear-gradient(
+      to right,
+      $background-linear-color-1,
+      $background-linear-color-2,
+      $background-linear-color-3
+    );
 
-    .error-message {
-        color: red;
-        text-align: start;
-        width: 100%;
-        font-size: 1rem;
-        /* background-color: green; */
-        display: flex;
-        padding-top: 0.2rem;
+    &:hover {
+      cursor: pointer;
     }
+  }
+
+  .cancel {
+    font-size: 0.8rem;
+    color: #a4a2a4;
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .error-message {
+    color: red;
+    text-align: start;
+    width: 100%;
+    font-size: 1rem;
+    /* background-color: green; */
+    display: flex;
+    padding-top: 0.2rem;
+  }
 }

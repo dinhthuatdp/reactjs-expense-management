@@ -6,12 +6,18 @@ import {
 import * as Yup from 'yup';
 
 import './CreateAccount.scss';
+import '../../Styles/Common.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators';
 import { Formik, ErrorMessage } from "formik";
 
 const INPUT_EMAIL_ID = 'inputEmailId';
 const INPUT_PASSWORD_ID = 'inputPasswordId';
 const INPUT_CONFIRM_PASSWORD_ID = 'inputConfirmPasswordId';
+const SHOW_PASSWORD_ID = 'showPasswordId';
+const SHOW_PASSWORD_CONFIRM_ID = 'showPasswordConfirmId';
+const SHOW_PASSWORD_HIDE_ID = 'showPasswordIdHide';
+const SHOW_PASSWORD_CONFIRM_HIDE_ID = 'showPasswordConfirmIdHide';
+
 
 class CreateAccount extends React.Component {
 
@@ -20,7 +26,9 @@ class CreateAccount extends React.Component {
         this.state = {
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            isShowPassword: false,
+            isShowPasswordConfirm: false
         }
     }
 
@@ -45,6 +53,19 @@ class CreateAccount extends React.Component {
             password,
             confirmPassword);
         this.props.signUp(action);
+    }
+
+    handleShowHidePassword = (e) => {
+        console.log(e.target.id)
+        if (e.target.id.includes(SHOW_PASSWORD_ID)) {
+            this.setState({
+                isShowPassword: !this.state.isShowPassword
+            })
+        } else if (e.target.id.includes(SHOW_PASSWORD_CONFIRM_ID)) {
+            this.setState({
+                isShowPasswordConfirm: !this.state.isShowPasswordConfirm
+            })
+        }
     }
 
     render() {
@@ -90,6 +111,14 @@ class CreateAccount extends React.Component {
                         </div>
                         <div className='input-icons input-password'>
                             <i className="icon fa-solid fa-lock"></i>
+                            {this.state.isShowPassword ?
+                                <i className="icon icon-right fa-solid fa-eye"
+                                    id={SHOW_PASSWORD_ID}
+                                    onClick={(e) => this.handleShowHidePassword(e)}></i>
+                                : <i className="fa-solid icon-right1 fa-eye-slash"
+                                    id={SHOW_PASSWORD_HIDE_ID}
+                                    onClick={(e) => this.handleShowHidePassword(e)}></i>
+                            }
                             <input
                                 name='password'
                                 value={props.values.password}
@@ -97,14 +126,22 @@ class CreateAccount extends React.Component {
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
                                 className='input-field'
-                                type='password'
+                                type={this.state.isShowPassword ? 'text' : 'password'}
                                 placeholder='Enter your password' />
                             <ErrorMessage name='password' >
                                 {errMsg => <span className="error-message">{errMsg}</span>}
                             </ErrorMessage>
                         </div>
-                        <div className='input-icons input-confirm-password'>
+                        <div className='input-icons input-password'>
                             <i className="icon fa-solid fa-check"></i>
+                            {this.state.isShowPasswordConfirm ?
+                                <i className="icon icon-right fa-solid fa-eye"
+                                    id={SHOW_PASSWORD_CONFIRM_ID}
+                                    onClick={(e) => this.handleShowHidePassword(e)}></i>
+                                : <i className="fa-solid icon-right1 fa-eye-slash"
+                                    id={SHOW_PASSWORD_CONFIRM_HIDE_ID}
+                                    onClick={(e) => this.handleShowHidePassword(e)}></i>
+                            }
                             <input
                                 name='confirmPassword'
                                 value={props.values.confirmPassword}
@@ -112,13 +149,15 @@ class CreateAccount extends React.Component {
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
                                 className='input-field'
-                                type='password'
+                                type={this.state.isShowPasswordConfirm ? 'text' : 'password'}
                                 placeholder='Confirm password' />
                             <ErrorMessage name='confirmPassword' >
                                 {errMsg => <span className="error-message">{errMsg}</span>}
                             </ErrorMessage>
                         </div>
-                        <button className='btn-sign-up'
+                        <button
+                            disabled={!props.isValid}
+                            className={!props.isValid ? 'disable-button btn-sign-up' : 'btn-sign-up'}
                             type='submit'>Sign up</button>
 
                         <Link className='cancel' to='/'>Cancel</Link>
