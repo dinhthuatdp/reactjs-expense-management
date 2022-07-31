@@ -99,8 +99,8 @@ class CreateAccount extends React.Component {
                             <input
                                 name='email'
                                 value={props.values.email}
-                                id={INPUT_EMAIL_ID}
                                 onChange={props.handleChange}
+                                id={INPUT_EMAIL_ID}
                                 onBlur={props.handleBlur}
                                 className='input-field'
                                 type='text'
@@ -121,9 +121,9 @@ class CreateAccount extends React.Component {
                             }
                             <input
                                 name='password'
+                                onChange={props.handleChange}
                                 value={props.values.password}
                                 id={INPUT_PASSWORD_ID}
-                                onChange={props.handleChange}
                                 onBlur={props.handleBlur}
                                 className='input-field'
                                 type={this.state.isShowPassword ? 'text' : 'password'}
