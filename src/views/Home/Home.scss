@@ -1,0 +1,53 @@
+@import "../../Styles/Common.scss";
+@import "../../Styles/variables";
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  width: 100%;
+  font-size: 1rem;
+  background-color: $background-color;
+
+  .home-containers {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .actions-form {
+      padding: 1rem;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .action-left {
+      }
+      .action-right {
+        float: right;
+
+        .input-search {
+          padding: 1rem;
+          border: none;
+          border-radius: 0.3rem;
+          margin-right: 1rem;
+          width: 20rem;
+          outline: none;
+        }
+      }
+    }
+
+    .home-title {
+      text-align: start;
+      width: 100%;
+      font-size: 2rem;
+    }
+  }
+}
+
+.data {
+  height: 30rem;
+  width: 100%;
+}

@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    Link
+    Link,
+    useNavigate
 } from 'react-router-dom';
+import { withRouter } from "react-router";
+
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 
@@ -44,6 +47,8 @@ class Login extends React.Component {
             password: password
         });
         this.props.login(action);
+        console.log('>>>> check handle login: ', this.props)
+        this.props.navigate('/')
     }
 
     handleLoginSocial(e) {
@@ -164,6 +169,11 @@ class Login extends React.Component {
     }
 }
 
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <Login {...props} navigate={navigate} />
+}
+
 const mapStateToProps = (state, ownProps) => {
     return {
         ...state
@@ -176,4 +186,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);

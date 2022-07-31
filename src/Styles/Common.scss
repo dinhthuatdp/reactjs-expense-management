@@ -1,3 +1,8 @@
+@import "./variables";
+
+$btn-create-color: #1a73e8;
+$green-color: green;
+
 .disable-button {
   opacity: 0.5;
 }
@@ -10,4 +15,23 @@
   /* background-color: green; */
   display: flex;
   padding-top: 0.2rem;
+}
+
+.btn-create {
+  background-color: $btn-create-color;
+  border: none;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  color: $white-color;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.btn-search {
+  background-color: $green-color;
+  padding: 0.7rem;
+  width: 7rem;
+  text-transform: uppercase;
 }
