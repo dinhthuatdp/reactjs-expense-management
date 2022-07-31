@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import {
     Link
 } from 'react-router-dom';
+import { Formik, ErrorMessage } from "formik";
+import * as Yup from 'yup';
 
 import './Login.scss';
+import '../../Styles/Common.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators'
 
 const LOGIN_BY_FB = 'loginByFacebook';
@@ -16,7 +19,8 @@ class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            isShowPassword: false
         }
     }
 
@@ -32,11 +36,12 @@ class Login extends React.Component {
         })
     }
 
-    handleLoginClickButton(e) {
-        console.log(this.props)
+    handleLoginClickButton(username, password) {
+        console.log('>>>>handleLoginClickButton:::check props ', this.props)
+
         const action = userActionCreators.login({
-            username: this.state.username,
-            password: this.state.password
+            username: username,
+            password: password
         });
         this.props.login(action);
     }
@@ -49,58 +54,112 @@ class Login extends React.Component {
         }
     }
 
+    handleShowHidePassword = (e) => {
+        this.setState({
+            isShowPassword: !this.state.isShowPassword
+        })
+    }
+
     render() {
+        const formikProps = {
+            initialValues: {
+                username: '',
+                password: ''
+            },
+            validateOnBlur: true,
+            validateOnChange: true,
+            validationSchema: Yup.object().shape({
+                username: Yup.string().email('Email invalid').required('Email is required.'),
+                password: Yup.string().required('Please enter password'),
+            }),
+            onSubmit: async (formValues, { setSubmitting, resetForm }) => {
+                console.log('>>>>check handle submit: ', formValues)
+                setSubmitting(true);
+                try {
+                    this.handleLoginClickButton(formValues.username, formValues.password);
+                    resetForm(true);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        }
+
         return (
-            <div className='login-form'>
-                <div className='login-text'>
-                    Login
-                    <div className='bottom-line'></div>
-                </div>
-                <div className='login-form-inputs'>
-                    <div className='input-username'>
-                        <input className='login-input'
-                            type='text'
-                            placeholder='Username'
-                            onChange={(e) => this.handleOnchangeUsername(e)} />
-                    </div>
-                    <div className='login-input input-password'>
-                        <input className='login-input'
-                            type='password'
-                            placeholder='Password'
-                            onChange={(e) => this.handleOnchangePassword(e)} />
-                    </div>
-                </div>
-                <div>
-                    <button className='login-button'
-                        onClick={(e) => this.handleLoginClickButton(e)}>Login</button>
-                    <div className='forgot-password'>
-                        Forgot your password?
-                    </div>
-                </div>
-                <div className='social-login'>
-                    <div className='social-text'>
-                        or Connect With Social Media
-                    </div>
-                    <div
-                        id='loginByFacebook'
-                        onClick={(e) => this.handleLoginSocial(e)}
-                        className='login-button social-login-fb'>
-                        <i className="fa-brands fa-facebook-f"></i>
-                        <span>Sign in With Facebook</span>
-                    </div>
-                    <div
-                        id='loginByGoogle'
-                        onClick={(e) => this.handleLoginSocial(e)}
-                        className='login-button social-login-gp'>
-                        <i className="fa-brands fa-google-plus-g"></i>
-                        <span>Sign in With Google</span>
-                    </div>
-                </div>
-                <div className='sign-up'>
-                    {/* <a href='#'>Sign up</a> */}
-                    <Link to='/sign-up'>Sign up</Link>
-                </div>
-            </div>
+            <Formik {...formikProps}>
+                {
+                    props => (
+                        <form className='login-form'
+                            onSubmit={props.handleSubmit}>
+                            <div className='login-text'>
+                                Login
+                                <div className='bottom-line'></div>
+                            </div>
+                            <div className='login-form-inputs'>
+                                <div className='input-username'>
+                                    <input className='login-input'
+                                        type='text'
+                                        name='username'
+                                        value={props.values.username}
+                                        placeholder='Email'
+                                        onChange={props.handleChange} />
+                                    <ErrorMessage name='username' >
+                                        {errMsg => <span className="error-message">{errMsg}</span>}
+                                    </ErrorMessage>
+                                </div>
+                                <div className='login-input input-password'>
+                                    {this.state.isShowPassword ?
+                                        <i className="icon icon-right fa-solid fa-eye"
+                                            onClick={(e) => this.handleShowHidePassword(e)}></i>
+                                        : <i className="fa-solid icon-right1 fa-eye-slash"
+                                            onClick={(e) => this.handleShowHidePassword(e)}></i>
+                                    }
+                                    <input className='login-input'
+                                        name='password'
+                                        value={props.values.password}
+                                        type={this.state.isShowPassword ? 'text' : 'password'}
+                                        placeholder='Password'
+                                        onChange={props.handleChange} />
+                                    <ErrorMessage name='password' >
+                                        {errMsg => <span className="error-message">{errMsg}</span>}
+                                    </ErrorMessage>
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    disabled={!props.isValid}
+                                    className={!props.isValid ? 'disable-button login-button' : 'login-button'}
+                                    type='submit'>Login</button>
+                                <div className='forgot-password'>
+                                    Forgot your password?
+                            </div>
+                            </div>
+                            <div className='social-login'>
+                                <div className='social-text'>
+                                    or Connect With Social Media
+                                </div>
+                                <div
+                                    id='loginByFacebook'
+                                    onClick={(e) => this.handleLoginSocial(e)}
+                                    className='login-button social-login-fb'>
+                                    <i className="fa-brands fa-facebook-f"></i>
+                                    <span>Sign in With Facebook</span>
+                                </div>
+                                <div
+                                    id='loginByGoogle'
+                                    onClick={(e) => this.handleLoginSocial(e)}
+                                    className='login-button social-login-gp'>
+                                    <i className="fa-brands fa-google-plus-g"></i>
+                                    <span>Sign in With Google</span>
+                                </div>
+                            </div>
+                            <div className='sign-up'>
+                                {/* <a href='#'>Sign up</a> */}
+                                <Link to='/sign-up'>Sign up</Link>
+                            </div>
+                        </form>
+                    )
+                }
+            </Formik>
         );
     }
 }
