@@ -4,7 +4,32 @@ $app-bar-color: #000;
 $menu-text: #fff;
 $menu-item-hover: #382f2f;
 
+@mixin MediaQuery($type) {
+  @media screen and (max-width: $type) {
+    @content;
+  }
+}
+
 .app-bar {
+  @include MediaQuery($lg) {
+    width: 100%;
+  }
+
+  @include MediaQuery($md1) {
+    width: 100%;
+  }
+
+  @include MediaQuery($md) {
+    width: 100%;
+  }
+
+  @include MediaQuery($ssm1) {
+    width: 100%;
+  }
+
+  @include MediaQuery($ssm) {
+    width: 100%;
+  }
   .app-bar-menu-list {
     background-color: $app-bar-color;
     color: $menu-text;
