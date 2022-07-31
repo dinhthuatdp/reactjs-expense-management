@@ -9,6 +9,7 @@ import {
 import './App.css';
 import CreateAccount from './views/Account/CreateAccount';
 import Login from './views/Login/Login';
+import Home from './views/Home/Home';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/sign-up' element={<CreateAccount />} exact />
-          <Route path='/' element={<Login />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

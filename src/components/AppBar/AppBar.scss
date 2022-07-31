@@ -1,31 +1,37 @@
-$app-bar-color: #053742;
-$menu-text: #96B4B8;
+@import "../../Styles/variables";
+
+$app-bar-color: #000;
+$menu-text: #fff;
+$menu-item-hover: #382f2f;
 
 .app-bar {
+  .app-bar-menu-list {
+    background-color: $app-bar-color;
+    color: $menu-text;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 0.1rem;
+    min-height: 3rem;
 
-    .app-bar-menu-list {
-        background-color: $app-bar-color;
+    .app-bar-menu-item {
+      height: 3rem;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+
+      a {
         color: $menu-text;
-        display: flex;
-        justify-content: right;
-        align-items: center;
-        gap: 0.1rem;
-        min-height: 3rem;
+      }
 
-        .app-bar-menu-item {
-            height: 3rem;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-transform: uppercase;
-
-            &:hover {
-                cursor: pointer;
-                background-color: #fff;
-                color: #000;
-                font-weight: 600;
-            }
-        }
+      &:hover {
+        cursor: pointer;
+        background-color: $menu-item-hover;
+        color: #000;
+        font-weight: 600;
+      }
     }
+  }
 }
