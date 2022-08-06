@@ -32,22 +32,6 @@ class CreateAccount extends React.Component {
         }
     }
 
-    handleInputChange = (e) => {
-        if (e.target.id === INPUT_EMAIL_ID) {
-            this.setState({
-                email: e.target.value
-            });
-        } else if (e.target.id === INPUT_CONFIRM_PASSWORD_ID) {
-            this.setState({
-                confirmPassword: e.target.value
-            });
-        } else if (e.target.id === INPUT_PASSWORD_ID) {
-            this.setState({
-                password: e.target.value
-            });
-        }
-    }
-
     handleSignup = (email, password, confirmPassword) => {
         const action = userActionCreators.signUp(email,
             password,

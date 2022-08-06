@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 
 import './Home.scss';
 import AppBar from '../../components/AppBar/AppBar';
+import ExpenseCreate from '../Expense/ExpenseCreate'
 
 class Home extends React.Component {
 
@@ -23,7 +24,8 @@ class Home extends React.Component {
         this.state = {
             searchValue: '',
             dataList: initialData,
-            initialData: initialData
+            initialData: initialData,
+            isShow: false
         }
     }
 
@@ -32,7 +34,6 @@ class Home extends React.Component {
             const searchResult = this.state.dataList.filter(item => item.category.toLocaleLowerCase()
                 .includes(this.state.searchValue.toLocaleLowerCase()))
 
-            console.log('>>>> check handle search click: ', this.state.dataList)
             this.setState({
                 dataList: searchResult
             })
@@ -53,6 +54,12 @@ class Home extends React.Component {
         if (e.key === "Enter") {
             this.handleSearch(e);
         }
+    }
+
+    handleAddExpense = (e) => {
+        this.setState({
+            isShow: !this.state.isShow
+        });
     }
 
     render() {
@@ -81,6 +88,10 @@ class Home extends React.Component {
 
         return (
             <div className='home-page'>
+                {
+                    this.state.isShow && (<ExpenseCreate
+                        handleCancelClick={this.handleAddExpense} />)
+                }
                 <AppBar />
                 <div className='home-containers'>
                     <div className='home-title'>
@@ -88,7 +99,8 @@ class Home extends React.Component {
                     </div>
                     <div className='actions-form'>
                         <div className='actions-left'>
-                            <Button className='btn-add' variant="contained">Add Expense</Button>
+                            <Button className='btn-add' variant="contained"
+                                onClick={(e) => this.handleAddExpense(e)}>Add Expense</Button>
                         </div>
                         <div className='action-right'>
                             <input

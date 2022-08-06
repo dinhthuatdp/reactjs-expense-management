@@ -1,0 +1,65 @@
+@import "../../Styles/Common.scss";
+@import "../../Styles/variables";
+
+.create-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  right: 0;
+  bottom: 0;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  border-radius: 0.3rem;
+  z-index: 2;
+  background-color: #fff;
+  width: 30rem;
+  min-height: 25rem;
+  text-align: left;
+  border: 1px solid $border-color;
+
+  .title {
+    padding: 1rem;
+    font-size: 2.2rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .date-input {
+    padding: 0.5rem 0;
+    width: 100%;
+
+    .lbl-date {
+    }
+  }
+  .btn {
+    text-align: right;
+    padding: 0;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    button {
+      width: 6rem;
+    }
+
+    .btn-cancel {
+      background-color: $white-color;
+      border: none;
+      padding: 1rem;
+      border-radius: 0.2rem;
+      color: $black-color;
+      cursor: pointer;
+      border: 1px solid $border-color;
+    }
+  }
+  .input {
+    input {
+      width: 100%;
+      outline: none;
+      border: none;
+      border-bottom: 0.1rem solid grey;
+      padding: 1rem 0;
+    }
+  }
+}
