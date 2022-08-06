@@ -106,6 +106,7 @@ class Login extends React.Component {
                                         name='username'
                                         value={props.values.username}
                                         placeholder='Email'
+                                        onBlur={props.handleBlur}
                                         onChange={props.handleChange} />
                                     <ErrorMessage name='username' >
                                         {errMsg => <span className="error-message">{errMsg}</span>}
@@ -123,6 +124,7 @@ class Login extends React.Component {
                                         value={props.values.password}
                                         type={this.state.isShowPassword ? 'text' : 'password'}
                                         placeholder='Password'
+                                        onBlur={props.handleBlur}
                                         onChange={props.handleChange} />
                                     <ErrorMessage name='password' >
                                         {errMsg => <span className="error-message">{errMsg}</span>}
