@@ -22,7 +22,6 @@ class ExpenseCreate extends React.Component {
     }
 
     handleAddClick = (date, cost, description, category, attachment) => {
-
         let expenseDate = (isNaN(date) && !date) ? moment().utc().format('yyyy-MM-DD') : date;
         let newExpense = {
             date: expenseDate,
@@ -33,7 +32,8 @@ class ExpenseCreate extends React.Component {
         }
         const action = expenseActionCreators.addExpense(newExpense);
         this.props.expenses(action);
-        console.log('>>>> Check handleAddClick: ', newExpense);
+        this.props.handleCancelClick();
+        this.props.loadData();
     }
 
     render() {

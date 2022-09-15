@@ -1,32 +1,28 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { connect } from 'react-redux';
 
 import './Home.scss';
 import AppBar from '../../components/AppBar/AppBar';
-import ExpenseCreate from '../Expense/ExpenseCreate'
+import ExpenseCreate from '../Expense/ExpenseCreate';
+import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
+import store from '../../Store/Store';
 
 class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        const initialData = [
-            { id: 1, category: 'Snow', price: '10$', date: '02/12/2021', itemName: 'item 1' },
-            { id: 2, category: 'Lannister', price: '204$', date: '03/12/2022', itemName: 'item 11' },
-            { id: 3, category: 'Lannister', price: '20$', date: '04/02/2022', itemName: 'item 12' },
-            { id: 4, category: 'Stark', price: '30$', date: '02/09/2021', itemName: 'item 21' },
-            { id: 5, category: 'Targaryen', price: '300$', date: '12/12/2021', itemName: 'item 41' },
-            { id: 6, category: 'Melisandre', price: '10$', date: '11/02/2022', itemName: 'item 15' },
-            { id: 7, category: 'Clifford', price: '1$', date: '12/12/2019', itemName: 'item 14' },
-            { id: 8, category: 'Frances', price: '99$', date: '06/12/2022', itemName: 'item 41' },
-            { id: 9, category: 'Roxie', price: '45$', date: '07/12/2020', itemName: 'item 61' },
-        ];
         this.state = {
             searchValue: '',
-            dataList: initialData,
-            initialData: initialData,
+            dataList: [],
             isShow: false
         }
+    }
+
+    componentDidMount() {
+        this.loadData();
     }
 
     handleSearch = (e) => {
@@ -62,12 +58,22 @@ class Home extends React.Component {
         });
     }
 
+    loadData = () => {
+        this.setState({ dataList: store.getState().expenses.expenses });
+    }
+
     render() {
 
         const columns = [
             { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'category', headerName: 'Category', width: 130 },
-            { field: 'price', headerName: 'Price', width: 130 },
+            {
+                field: 'category',
+                headerName: 'Category',
+                // description: 'This column has a value getter and is not sortable.',
+                sortable: true,
+                width: 160,
+            },
+            { field: 'cost', headerName: 'Cost', width: 130 },
             {
                 field: 'date',
                 headerName: 'Date',
@@ -76,20 +82,28 @@ class Home extends React.Component {
                 valueGetter: ({ value }) => value && new Date(value),
             },
             {
-                field: 'itemName',
-                headerName: 'Item Name',
+                field: 'description',
+                headerName: 'Description',
                 // description: 'This column has a value getter and is not sortable.',
                 sortable: true,
                 width: 160,
             },
         ];
-
         const rows = this.state.dataList;
+
+        function noRowsOverlay() {
+            return (
+                <Stack height="100%" alignItems="center" justifyContent="center">
+                    No Data
+                </Stack>
+            );
+        }
 
         return (
             <div className='home-page'>
                 {
                     this.state.isShow && (<ExpenseCreate
+                        loadData={this.loadData}
                         handleCancelClick={this.handleAddExpense} />)
                 }
                 <AppBar />
@@ -116,6 +130,7 @@ class Home extends React.Component {
                     </div>
                     <div className='data'>
                         <DataGrid
+                            components={{ NoRowsOverlay: noRowsOverlay }}
                             className='data-grid'
                             rows={rows}
                             columns={columns}
@@ -130,4 +145,16 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        ...state
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        expenses: (action) => dispatch(action)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

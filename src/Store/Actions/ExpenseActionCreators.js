@@ -1,4 +1,4 @@
-import { ADD_EXPENSE } from './ActionTypes';
+import { ADD_EXPENSE, GET_DATA } from './ActionTypes';
 
 const addExpense = (expense) => {
     return {
@@ -7,6 +7,13 @@ const addExpense = (expense) => {
     }
 }
 
+const getExpenses = () => {
+    return {
+        type: GET_DATA
+    }
+}
+
 export default {
-    addExpense
+    addExpense,
+    getExpenses
 }
