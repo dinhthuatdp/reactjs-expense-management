@@ -3,6 +3,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { connect } from 'react-redux';
+import {
+    useNavigate
+} from 'react-router-dom';
 
 import './Home.scss';
 import AppBar from '../../components/AppBar/AppBar';
@@ -59,6 +62,11 @@ class Home extends React.Component {
         this.setState({
             isShow: !this.state.isShow
         });
+    }
+
+    handleCellClick = (e) => {
+        console.log('handleCellClick');
+        this.props.navigate('/expense-details');
     }
 
     loadData = () => {
@@ -142,7 +150,7 @@ class Home extends React.Component {
                             columns={columns}
                             pageSize={5}
                             rowsPerPageOptions={[5]}
-                            checkboxSelection
+                            onCellClick={(e) => this.handleCellClick()}
                         />
                     </div>
                 </div>
@@ -163,4 +171,9 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+function WithNavigate(props) {
+    let nav = useNavigate();
+    return <Home {...props} navigate={nav} />;
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);
