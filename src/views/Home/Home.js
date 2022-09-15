@@ -26,6 +26,9 @@ class Home extends React.Component {
     }
 
     handleSearch = (e) => {
+        if (!this.state.dataList) {
+            return;
+        }
         if (this.state.searchValue) {
             const searchResult = this.state.dataList.filter(item => item.category.toLocaleLowerCase()
                 .includes(this.state.searchValue.toLocaleLowerCase()))
@@ -35,7 +38,7 @@ class Home extends React.Component {
             })
         } else {
             this.setState({
-                dataList: this.state.initialData
+                dataList: store.getState().expenses.expenses
             })
         }
     }
@@ -89,7 +92,10 @@ class Home extends React.Component {
                 width: 160,
             },
         ];
-        const rows = this.state.dataList;
+        let rows = this.state.dataList;
+        if (!rows) {
+            rows = [];
+        }
 
         function noRowsOverlay() {
             return (
