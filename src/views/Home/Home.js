@@ -8,9 +8,7 @@ import {
 } from 'react-router-dom';
 
 import './Home.scss';
-import AppBar from '../../components/AppBar/AppBar';
 import ExpenseCreate from '../Expense/ExpenseCreate';
-import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import store from '../../Store/Store';
 
 class Home extends React.Component {
@@ -64,9 +62,8 @@ class Home extends React.Component {
         });
     }
 
-    handleCellClick = (e) => {
-        console.log('handleCellClick');
-        this.props.navigate('/expense-details');
+    handleCellClick = (params) => {
+        this.props.navigate(`/expense/${params.id}`);
     }
 
     loadData = () => {
@@ -114,13 +111,12 @@ class Home extends React.Component {
         }
 
         return (
-            <div className='home-page'>
+            <div className='page-content home-page'>
                 {
                     this.state.isShow && (<ExpenseCreate
                         loadData={this.loadData}
                         handleCancelClick={this.handleAddExpense} />)
                 }
-                <AppBar />
                 <div className='home-containers'>
                     <div className='home-title'>
                         Personal Expense Manager
@@ -150,7 +146,7 @@ class Home extends React.Component {
                             columns={columns}
                             pageSize={5}
                             rowsPerPageOptions={[5]}
-                            onCellClick={(e) => this.handleCellClick()}
+                            onCellClick={this.handleCellClick}
                         />
                     </div>
                 </div>

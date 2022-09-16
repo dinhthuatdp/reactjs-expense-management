@@ -1,0 +1,17 @@
+@import "../../Styles/Common.scss";
+@import "../../Styles/variables";
+
+@mixin MediaQuery($type) {
+  @media screen and (max-width: $type) {
+    @content;
+  }
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  font-size: 1rem;
+  background-color: $background-color;
+}

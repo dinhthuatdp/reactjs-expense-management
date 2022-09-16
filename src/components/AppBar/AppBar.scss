@@ -11,6 +11,9 @@ $menu-item-hover: #382f2f;
 }
 
 .app-bar {
+  position: fixed;
+  top: 0;
+
   @include MediaQuery($lg) {
     width: 100%;
   }
@@ -38,6 +41,7 @@ $menu-item-hover: #382f2f;
     align-items: center;
     gap: 0.1rem;
     min-height: 3rem;
+    font-size: 1rem;
 
     .app-bar-menu-item {
       height: 3rem;
@@ -46,6 +50,7 @@ $menu-item-hover: #382f2f;
       justify-content: center;
       align-items: center;
       text-transform: uppercase;
+      color: $white-color;
 
       a {
         color: $menu-text;
@@ -54,7 +59,6 @@ $menu-item-hover: #382f2f;
       &:hover {
         cursor: pointer;
         background-color: $menu-item-hover;
-        color: #000;
         font-weight: 600;
       }
     }

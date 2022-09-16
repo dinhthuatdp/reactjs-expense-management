@@ -6,6 +6,12 @@
   }
 }
 
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .login-form {
   font-size: 0.8rem;
   width: 30rem;

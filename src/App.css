@@ -3,9 +3,10 @@
   position: relative;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-size: 0.625rem;
+  flex-direction: column;
 }
 
 .App-logo {
