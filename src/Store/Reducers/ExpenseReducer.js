@@ -1,8 +1,9 @@
-import { ADD_EXPENSE, GET_DATA } from '../Actions/ActionTypes';
+import { ADD_EXPENSE, GET_DATA, GET_DETAILS } from '../Actions/ActionTypes';
 
 
 const initialState = {
     expenses: [],
+    expenseDetails: null
 }
 
 const expenseReducer = (state = initialState, action) => {
@@ -24,6 +25,14 @@ const expenseReducer = (state = initialState, action) => {
         case GET_DATA:
             console.log('>>>> Check expense reducer GET_DATA: ', state.expenses);
             return state;
+        case GET_DETAILS:
+            const data = state.expenses.find(x => {
+                return x.id === action.payload
+            });
+            return {
+                ...state,
+                expenseDetails: data
+            };
         default:
             return state;
     }

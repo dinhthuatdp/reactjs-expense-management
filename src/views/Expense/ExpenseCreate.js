@@ -113,7 +113,7 @@ class ExpenseCreate extends React.Component {
                                     value={props.values.attachment}
                                 />
                             </div>
-                            <div className='btn'>
+                            <div className='btns'>
                                 <button
                                     disabled={!props.isValid}
                                     className={!props.isValid ? 'disable-button btn-create' : 'btn-create'}

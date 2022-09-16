@@ -1,4 +1,4 @@
-import { ADD_EXPENSE, GET_DATA } from './ActionTypes';
+import { ADD_EXPENSE, GET_DATA, GET_DETAILS } from './ActionTypes';
 
 const addExpense = (expense) => {
     return {
@@ -13,7 +13,17 @@ const getExpenses = () => {
     }
 }
 
-export default {
-    addExpense,
-    getExpenses
+const getExpenseDetails = (id) => {
+    return {
+        type: GET_DETAILS,
+        payload: id
+    }
 }
+
+const actionCreators = {
+    addExpense,
+    getExpenses,
+    getExpenseDetails
+}
+
+export default actionCreators;

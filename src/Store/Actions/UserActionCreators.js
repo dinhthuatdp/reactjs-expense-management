@@ -17,7 +17,9 @@ const signUp = (email, password, confirmPassword) => ({
     }
 })
 
-export default {
+const userCreators = {
     login,
     signUp
 }
+
+export default userCreators;
