@@ -1,5 +1,6 @@
-import { ADD_EXPENSE, GET_DATA, GET_DETAILS } from '../Actions/ActionTypes';
+import { v4 as uuidv4 } from 'uuid';
 
+import { ADD_EXPENSE, GET_DATA, GET_DETAILS, DELETE_EXPENSE } from '../Actions/ActionTypes';
 
 const initialState = {
     expenses: [],
@@ -18,7 +19,7 @@ const expenseReducer = (state = initialState, action) => {
             return {
                 ...state,
                 expenses: [...state.expenses, {
-                    id: newState.length + 1,
+                    id: uuidv4(),
                     ...action.payload
                 }]
             };
@@ -33,6 +34,13 @@ const expenseReducer = (state = initialState, action) => {
                 ...state,
                 expenseDetails: data
             };
+        case DELETE_EXPENSE:
+            const newList = state.expenses.filter(x => x.id != action.payload);
+            console.log('>>>> Check expense reducer DELETE_EXPENSE: ', newList);
+            return {
+                ...state,
+                expenses: newList
+            }
         default:
             return state;
     }

@@ -1,4 +1,4 @@
-import { ADD_EXPENSE, GET_DATA, GET_DETAILS } from './ActionTypes';
+import { ADD_EXPENSE, GET_DATA, GET_DETAILS, DELETE_EXPENSE } from './ActionTypes';
 
 const addExpense = (expense) => {
     return {
@@ -20,10 +20,18 @@ const getExpenseDetails = (id) => {
     }
 }
 
+const deleteExpense = (id) => {
+    return {
+        type: DELETE_EXPENSE,
+        payload: id
+    }
+}
+
 const actionCreators = {
     addExpense,
     getExpenses,
-    getExpenseDetails
+    getExpenseDetails,
+    deleteExpense
 }
 
 export default actionCreators;

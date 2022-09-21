@@ -12,6 +12,7 @@ $menu-item-hover: #382f2f;
 
 .app-bar {
   position: fixed;
+  width: 100%;
   top: 0;
 
   @include MediaQuery($lg) {

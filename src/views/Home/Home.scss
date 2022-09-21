@@ -255,13 +255,13 @@
 
   @include MediaQuery($md1) {
     .data-grid {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
   }
 
   @include MediaQuery($md) {
     .data-grid {
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './ExpenseDetails.scss';
@@ -20,10 +20,13 @@ class ExpenseDetails extends React.Component {
 
     componentDidMount() {
         this.loadData(this.props.params.id);
+        this.setState({
+            isEdit: this.props.location.state.isEdit
+        })
     }
 
     loadData = (id) => {
-        const action = ExpenseActionCreators.getExpenseDetails(parseInt(id));
+        const action = ExpenseActionCreators.getExpenseDetails(id);
         this.props.expenses(action);
         this.setState({
             expenseDetails: store.getState().expenses.expenseDetails
@@ -57,6 +60,13 @@ class ExpenseDetails extends React.Component {
         });
     }
     render() {
+        let dropdownData = null;
+        if (this.state.expenseDetails) {
+            dropdownData = {
+                data: this.state.expenseDetails.type,
+                dataList: ['incoming', 'spending']
+            }
+        }
         return (
             <div className='page-content details-page'>
                 <div className='details-container'>
@@ -70,6 +80,10 @@ class ExpenseDetails extends React.Component {
                         this.state.expenseDetails ? (
                             this.state.isEdit ?
                                 <>
+                                    <GroupEdit
+                                        type='dropdown'
+                                        text='Type'
+                                        data={dropdownData} />
                                     <GroupEdit
                                         type='date'
                                         text='Date'
@@ -99,6 +113,9 @@ class ExpenseDetails extends React.Component {
                                 </>
                                 : <>
                                     <GroupInfo
+                                        text='Type'
+                                        data={this.state.expenseDetails.type} />
+                                    <GroupInfo
                                         text='Date'
                                         data={this.state.expenseDetails.date} />
                                     <GroupInfo
@@ -127,7 +144,8 @@ class ExpenseDetails extends React.Component {
 function WithNavigate(props) {
     let navigate = useNavigate();
     let params = useParams();
-    return <ExpenseDetails {...props} navigate={navigate} params={params} />
+    let location = useLocation();
+    return <ExpenseDetails {...props} navigate={navigate} params={params} location={location} />
 }
 
 const mapStateToProps = (state, ownProps) => {
