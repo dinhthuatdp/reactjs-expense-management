@@ -10,6 +10,8 @@ import {
 import './Home.scss';
 import ExpenseCreate from '../Expense/ExpenseCreate';
 import store from '../../Store/Store';
+import ExpenseCard from '../../components/Card/ExpenseCard';
+import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 
 class Home extends React.Component {
 
@@ -70,10 +72,34 @@ class Home extends React.Component {
         this.setState({ dataList: store.getState().expenses.expenses });
     }
 
+    editOnClick = (id) => {
+        this.props.navigate(`/expense/${id}`, {
+            state: {
+                isEdit: true
+            }
+        });
+    }
+
+    viewOnClick = (id) => {
+        this.props.navigate(`/expense/${id}`, {
+            state: {
+                isEdit: false
+            }
+        });
+    }
+
+    deleteOnClick = (id) => {
+        console.log('check id', id)
+        const action = expenseActionCreators.deleteExpense(id);
+        this.props.expenses(action);
+        this.loadData();
+    }
+
     render() {
 
         const columns = [
             { field: 'id', headerName: 'ID', width: 70 },
+            { field: 'type', headerName: 'Type', width: 120 },
             {
                 field: 'category',
                 headerName: 'Category',
@@ -110,6 +136,16 @@ class Home extends React.Component {
             );
         }
 
+        const elements = this.state.dataList.map(x => {
+            return <ExpenseCard
+                {...this.props}
+                deleteOnClick={(e) => this.deleteOnClick(e, x.id)}
+                editOnClick={(e) => this.editOnClick(e, x.id)}
+                viewOnClick={(e) => this.viewOnClick(e, x.id)}
+                key={x.id}
+                data={x} />
+        })
+
         return (
             <div className='page-content home-page'>
                 {
@@ -139,7 +175,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='data'>
-                        <DataGrid
+                        {/* <DataGrid
                             components={{ NoRowsOverlay: noRowsOverlay }}
                             className='data-grid'
                             rows={rows}
@@ -147,7 +183,10 @@ class Home extends React.Component {
                             pageSize={5}
                             rowsPerPageOptions={[5]}
                             onCellClick={this.handleCellClick}
-                        />
+                        /> */}
+                        {
+                            elements
+                        }
                     </div>
                 </div>
             </div>

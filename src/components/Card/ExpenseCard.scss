@@ -1,0 +1,58 @@
+.card {
+  $border-color: #e0e0e0;
+  $gb-color: #fff;
+  $color-gray: #a4a2a4;
+
+  position: relative;
+  min-height: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  border: 1px solid $border-color;
+  background-color: $gb-color;
+  margin: 0.2rem;
+  border-radius: 0.4rem;
+  &:hover {
+    box-shadow: 0 0 1px 0px grey;
+    transform: translate(1px, 1px);
+  }
+
+  .card-group {
+    text-align: start;
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .card-col {
+    width: 6rem;
+  }
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    right: 1rem;
+
+    .btn-view,
+    .btn-edit,
+    .btn-delete {
+      font-size: 0.6rem;
+      padding: 0.8rem;
+    }
+    .btn-edit {
+      background-color: orange;
+    }
+    .btn-delete {
+      background-color: #ff3030;
+    }
+  }
+  .date {
+    color: $color-gray;
+    font-size: 0.8rem;
+  }
+  .type {
+    text-transform: uppercase;
+  }
+}

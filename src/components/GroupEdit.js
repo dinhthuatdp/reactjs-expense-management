@@ -18,6 +18,15 @@ class GroupEdit extends React.Component {
             data: e.target.value
         });
     }
+    onChangeDropdownInput = (e) => {
+        e.preventDefault();
+        this.setState({
+            data: {
+                ...this.state.data,
+                data: e.target.value
+            }
+        });
+    }
     render() {
         let inputElement;
         if (this.state.type === 'date') {
@@ -27,6 +36,17 @@ class GroupEdit extends React.Component {
         } else if (this.state.type === 'textarea') {
             inputElement = <textarea value={this.state.data}
                 onChange={(e) => this.onChangeInput(e)} />;
+        } else if (this.state.type === 'dropdown') {
+            let options = null;
+            if (this.state.data.dataList) {
+                options = this.state.data.dataList.map(x => {
+                    return <option key={x} value={x}>{x}</option>;
+                });
+            }
+            inputElement = <select value={this.state.data.data}
+                onChange={(e) => this.onChangeDropdownInput(e)}>
+                {options}
+            </select>
         } else {
             inputElement = <input type={this.state.type}
                 value={this.state.data}

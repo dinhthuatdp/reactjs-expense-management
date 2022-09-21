@@ -13,6 +13,7 @@ class ExpenseCreate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            type: '',
             date: '',
             cost: '',
             description: '',
@@ -21,9 +22,10 @@ class ExpenseCreate extends React.Component {
         }
     }
 
-    handleAddClick = (date, cost, description, category, attachment) => {
+    handleAddClick = (type, date, cost, description, category, attachment) => {
         let expenseDate = (isNaN(date) && !date) ? moment().utc().format('yyyy-MM-DD') : date;
         let newExpense = {
+            type: type,
             date: expenseDate,
             cost: cost,
             description: description,
@@ -39,6 +41,7 @@ class ExpenseCreate extends React.Component {
     render() {
         const formikProps = {
             initialValues: {
+                type: 'spending',
                 date: moment().utc().format('yyyy-MM-DD'),
                 cost: '',
                 description: '',
@@ -55,7 +58,7 @@ class ExpenseCreate extends React.Component {
             onSubmit: async (formValues, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 try {
-                    this.handleAddClick(formValues.date, formValues.cost, formValues.description,
+                    this.handleAddClick(formValues.type, formValues.date, formValues.cost, formValues.description,
                         formValues.category, formValues.attachment);
                     resetForm(true);
                 } catch (e) {
@@ -71,6 +74,16 @@ class ExpenseCreate extends React.Component {
                             onSubmit={props.handleSubmit}>
                             <div className='title'>
                                 Add Expense
+                            </div>
+                            <div className='input'>
+                                <div className='type-input'>Type</div>
+                                <select
+                                    name='type'
+                                    value='spending'
+                                    onChange={props.handleChange}>
+                                    <option value='incoming'>Incoming</option>
+                                    <option value='spending'>Spending</option>
+                                </select>
                             </div>
                             <div className='date-input input'>
                                 <div className='lbl-date'>Date</div>
