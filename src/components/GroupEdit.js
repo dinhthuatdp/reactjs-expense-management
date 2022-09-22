@@ -12,11 +12,19 @@ class GroupEdit extends React.Component {
             type: this.props.type
         }
     }
+
     onChangeInput = (e) => {
         e.preventDefault();
         this.setState({
             data: e.target.value
         });
+        this.props.onChange(e);
+    }
+    onChangeInputDate = (newDate) => {
+        this.setState({
+            data: newDate
+        });
+        this.props.onChange(newDate);
     }
     onChangeDropdownInput = (e) => {
         e.preventDefault();
@@ -26,15 +34,17 @@ class GroupEdit extends React.Component {
                 data: e.target.value
             }
         });
+        this.props.onChange(e);
     }
     render() {
         let inputElement;
         if (this.state.type === 'date') {
             inputElement = <BasicDatePicker
+                onChangeDate={(date) => this.onChangeInputDate(date)}
                 value={this.state.data}
                 text={this.state.text} />
         } else if (this.state.type === 'textarea') {
-            inputElement = <textarea value={this.state.data}
+            inputElement = <textarea className='textarea' value={this.state.data}
                 onChange={(e) => this.onChangeInput(e)} />;
         } else if (this.state.type === 'dropdown') {
             let options = null;
@@ -47,6 +57,11 @@ class GroupEdit extends React.Component {
                 onChange={(e) => this.onChangeDropdownInput(e)}>
                 {options}
             </select>
+        } else if (this.state.type === 'file') {
+            inputElement = <><input type={this.state.type}
+                onChange={(e) => this.onChangeInput(e)} />
+                <img className='file-img' src={this.state.data} />
+            </>;
         } else {
             inputElement = <input type={this.state.type}
                 value={this.state.data}

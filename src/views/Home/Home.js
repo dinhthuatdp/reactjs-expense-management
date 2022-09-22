@@ -89,7 +89,6 @@ class Home extends React.Component {
     }
 
     deleteOnClick = (id) => {
-        console.log('check id', id)
         const action = expenseActionCreators.deleteExpense(id);
         this.props.expenses(action);
         this.loadData();

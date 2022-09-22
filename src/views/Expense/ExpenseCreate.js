@@ -30,7 +30,7 @@ class ExpenseCreate extends React.Component {
             cost: cost,
             description: description,
             category: category,
-            attachment: attachment
+            attachment: "https://cdn.pixabay.com/photo/2022/09/01/20/41/tomatoes-7426160_1280.jpg"
         }
         const action = expenseActionCreators.addExpense(newExpense);
         this.props.expenses(action);
@@ -119,7 +119,7 @@ class ExpenseCreate extends React.Component {
                                     value={props.values.category} />
                             </div>
                             <div className='attachment-input input'>
-                                <input type='text' placeholder='Enter attachment'
+                                <input type='file' placeholder='Enter attachment'
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
                                     name='attachment'

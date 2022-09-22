@@ -1,6 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ADD_EXPENSE, GET_DATA, GET_DETAILS, DELETE_EXPENSE } from '../Actions/ActionTypes';
+import {
+    ADD_EXPENSE, GET_DATA, GET_DETAILS, DELETE_EXPENSE,
+    UPDATE_EXPENSE
+} from '../Actions/ActionTypes';
 
 const initialState = {
     expenses: [],
@@ -40,6 +43,21 @@ const expenseReducer = (state = initialState, action) => {
             return {
                 ...state,
                 expenses: newList
+            }
+        case UPDATE_EXPENSE:
+            let idx = state.expenses.findIndex(x => {
+                return x.id === action.payload.id
+            })
+            if (idx < 0) {
+                return state;
+            }
+            let newList1 = state.expenses;
+            newList1[idx] = action.payload;
+
+            console.log('>>>> Check expense reducer UPDATE_EXPENSE: ', action.payload);
+            return {
+                ...state,
+                expenses: newList1
             }
         default:
             return state;

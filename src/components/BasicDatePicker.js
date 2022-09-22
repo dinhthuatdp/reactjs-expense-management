@@ -23,6 +23,7 @@ class BasicDatePicker extends React.Component {
                         this.setState({
                             value: newValue
                         })
+                        this.props.onChangeDate(newValue.format());
                     }}
                     renderInput={(params) => <TextField {...params} />}
                 />

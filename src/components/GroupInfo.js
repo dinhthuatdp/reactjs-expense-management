@@ -7,14 +7,20 @@ class GroupInfo extends React.Component {
         super(props);
         this.state = {
             text: this.props.text,
-            data: this.props.data
+            data: this.props.data,
+            type: this.props.type
         }
     }
     render() {
         return (
             <div className='group-info'>
                 <div className='text'>{this.state.text}</div>
-                <div className='info'>{this.state.data}</div>
+                {
+                    this.state.type === 'image' ?
+                        <img className='info-img' src={this.state.data} />
+                        :
+                        <div className='info'>{this.state.data}</div>
+                }
             </div>
         );
     }

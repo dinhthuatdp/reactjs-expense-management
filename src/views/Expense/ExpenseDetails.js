@@ -33,6 +33,26 @@ class ExpenseDetails extends React.Component {
         })
     }
 
+    handleOnChangeInputDate = (value) => {
+        console.log('handleOnChangeInputDate', ' value', value)
+
+        this.setState({
+            expenseDetails: {
+                ...this.state.expenseDetails,
+                date: value
+            }
+        });
+    }
+
+    handleOnChangeInput = (e, name) => {
+        this.setState({
+            expenseDetails: {
+                ...this.state.expenseDetails,
+                [name]: e.target.value
+            }
+        });
+    }
+
     handleBackClick = (e) => {
         e.preventDefault();
         this.props.navigate(-1);
@@ -54,7 +74,16 @@ class ExpenseDetails extends React.Component {
 
     handleSaveClick = (e) => {
         e.preventDefault();
-        // TODO
+        const action = ExpenseActionCreators.updateExpense({
+            id: this.state.expenseDetails.id,
+            type: this.state.expenseDetails.type,
+            date: this.state.expenseDetails.date,
+            cost: this.state.expenseDetails.cost,
+            description: this.state.expenseDetails.description,
+            category: this.state.expenseDetails.category,
+            attachment: this.state.expenseDetails.attachment
+        });
+        this.props.expenses(action);
         this.setState({
             isEdit: !this.state.isEdit
         });
@@ -83,26 +112,32 @@ class ExpenseDetails extends React.Component {
                                     <GroupEdit
                                         type='dropdown'
                                         text='Type'
+                                        onChange={(e) => this.handleOnChangeInput(e, 'type')}
                                         data={dropdownData} />
                                     <GroupEdit
                                         type='date'
                                         text='Date'
+                                        onChange={(newValue) => this.handleOnChangeInputDate(newValue)}
                                         data={this.state.expenseDetails.date} />
                                     <GroupEdit
                                         type='text'
                                         text='Category'
+                                        onChange={(e) => this.handleOnChangeInput(e, 'category')}
                                         data={this.state.expenseDetails.category} />
                                     <GroupEdit
                                         type='text'
                                         text='Cost'
+                                        onChange={(e) => this.handleOnChangeInput(e, 'cost')}
                                         data={this.state.expenseDetails.cost} />
                                     <GroupEdit
                                         type='textarea'
                                         text='Description'
+                                        onChange={(e) => this.handleOnChangeInput(e, 'description')}
                                         data={this.state.expenseDetails.description} />
                                     <GroupEdit
-                                        type='text'
+                                        type='file'
                                         text='Attachment'
+                                        onChange={(e) => this.handleOnChangeInput(e, 'attachment')}
                                         data={this.state.expenseDetails.attachment} />
                                     <div className='edit-actions'>
                                         <button className='btn'
@@ -128,6 +163,7 @@ class ExpenseDetails extends React.Component {
                                         text='Description'
                                         data={this.state.expenseDetails.description} />
                                     <GroupInfo
+                                        type='image'
                                         text='Attachment'
                                         data={this.state.expenseDetails.attachment} />
                                 </>
