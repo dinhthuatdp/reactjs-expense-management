@@ -95,46 +95,6 @@ class Home extends React.Component {
     }
 
     render() {
-
-        const columns = [
-            { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'type', headerName: 'Type', width: 120 },
-            {
-                field: 'category',
-                headerName: 'Category',
-                // description: 'This column has a value getter and is not sortable.',
-                sortable: true,
-                width: 160,
-            },
-            { field: 'cost', headerName: 'Cost', width: 130 },
-            {
-                field: 'date',
-                headerName: 'Date',
-                type: 'dateTime',
-                width: 180,
-                valueGetter: ({ value }) => value && new Date(value),
-            },
-            {
-                field: 'description',
-                headerName: 'Description',
-                // description: 'This column has a value getter and is not sortable.',
-                sortable: true,
-                width: 160,
-            },
-        ];
-        let rows = this.state.dataList;
-        if (!rows) {
-            rows = [];
-        }
-
-        function noRowsOverlay() {
-            return (
-                <Stack height="100%" alignItems="center" justifyContent="center">
-                    No Data
-                </Stack>
-            );
-        }
-
         const elements = this.state.dataList.map(x => {
             return <ExpenseCard
                 {...this.props}
@@ -146,7 +106,7 @@ class Home extends React.Component {
         })
 
         return (
-            <div className='page-content home-page'>
+            <div className='page-content'>
                 {
                     this.state.isShow && (<ExpenseCreate
                         loadData={this.loadData}
@@ -174,15 +134,6 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='data'>
-                        {/* <DataGrid
-                            components={{ NoRowsOverlay: noRowsOverlay }}
-                            className='data-grid'
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            onCellClick={this.handleCellClick}
-                        /> */}
                         {
                             elements
                         }

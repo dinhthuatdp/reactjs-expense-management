@@ -6,19 +6,31 @@ import * as moment from 'moment';
 
 import './ExpenseCreate.scss';
 import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
+import Dropdown from '../../components/Dropdown/Dropdown';
 
 
 class ExpenseCreate extends React.Component {
 
     constructor(props) {
         super(props);
+        const dropdownData = [
+            {
+                value: 'incoming',
+                displayValue: 'Incoming'
+            },
+            {
+                value: 'spending',
+                displayValue: 'Spending'
+            }
+        ];
         this.state = {
-            type: '',
+            type: dropdownData[1].value,
             date: '',
             cost: '',
             description: '',
             category: '',
-            attachment: ''
+            attachment: '',
+            dropdownData: dropdownData
         }
     }
 
@@ -41,7 +53,7 @@ class ExpenseCreate extends React.Component {
     render() {
         const formikProps = {
             initialValues: {
-                type: 'spending',
+                type: this.state.type,
                 date: moment().utc().format('yyyy-MM-DD'),
                 cost: '',
                 description: '',
@@ -77,13 +89,11 @@ class ExpenseCreate extends React.Component {
                             </div>
                             <div className='input'>
                                 <div className='type-input'>Type</div>
-                                <select
+                                <Dropdown list={this.state.dropdownData}
                                     name='type'
-                                    value='spending'
-                                    onChange={props.handleChange}>
-                                    <option value='incoming'>Incoming</option>
-                                    <option value='spending'>Spending</option>
-                                </select>
+                                    value={this.state.type}
+                                    onChange={props.handleChange}
+                                />
                             </div>
                             <div className='date-input input'>
                                 <div className='lbl-date'>Date</div>

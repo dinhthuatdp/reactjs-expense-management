@@ -6,7 +6,6 @@ import {
 import * as Yup from 'yup';
 
 import './CreateAccount.scss';
-import '../../Styles/Common.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators';
 import { Formik, ErrorMessage } from "formik";
 

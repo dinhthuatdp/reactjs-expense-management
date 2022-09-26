@@ -10,7 +10,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
 }
 .login-form {
   font-size: 0.8rem;
@@ -192,14 +191,16 @@
       min-width: 4rem;
       font-size: 1.2rem;
       right: -1rem;
-      top: -0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
       position: absolute;
     }
     .icon-right1 {
       min-width: 4rem;
       font-size: 1.2rem;
       right: -1rem;
-      top: 0rem;
+      top: 50%;
+      transform: translateY(-50%);
       position: absolute;
     }
     &:hover {

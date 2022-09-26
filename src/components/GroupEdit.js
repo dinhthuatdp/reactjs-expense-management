@@ -2,10 +2,12 @@ import React from 'react';
 
 import BasicDatePicker from './BasicDatePicker';
 import './GroupEdit.scss';
+import Dropdown from './Dropdown/Dropdown';
 
 class GroupEdit extends React.Component {
     constructor(props) {
         super(props);
+        console.log('check props GroupEdit', this.props)
         this.state = {
             text: this.props.text,
             data: this.props.data,
@@ -47,16 +49,9 @@ class GroupEdit extends React.Component {
             inputElement = <textarea className='textarea' value={this.state.data}
                 onChange={(e) => this.onChangeInput(e)} />;
         } else if (this.state.type === 'dropdown') {
-            let options = null;
-            if (this.state.data.dataList) {
-                options = this.state.data.dataList.map(x => {
-                    return <option key={x} value={x}>{x}</option>;
-                });
-            }
-            inputElement = <select value={this.state.data.data}
-                onChange={(e) => this.onChangeDropdownInput(e)}>
-                {options}
-            </select>
+            inputElement = <Dropdown list={this.state.data.dataList}
+                value={this.state.data.data}
+                onChange={(e) => this.onChangeDropdownInput(e)} />
         } else if (this.state.type === 'file') {
             inputElement = <><input type={this.state.type}
                 onChange={(e) => this.onChangeInput(e)} />
