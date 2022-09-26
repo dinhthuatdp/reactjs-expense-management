@@ -1,164 +1,92 @@
 import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { connect } from 'react-redux';
-import {
-    useNavigate
-} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import './Home.scss';
-import ExpenseCreate from '../Expense/ExpenseCreate';
-import store from '../../Store/Store';
-import ExpenseCard from '../../components/Card/ExpenseCard';
-import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 
 class Home extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchValue: '',
-            dataList: [],
-            isShow: false
-        }
-    }
-
-    componentDidMount() {
-        this.loadData();
-    }
-
-    handleSearch = (e) => {
-        if (!this.state.dataList) {
-            return;
-        }
-        if (this.state.searchValue) {
-            const searchResult = this.state.dataList.filter(item => item.category.toLocaleLowerCase()
-                .includes(this.state.searchValue.toLocaleLowerCase()))
-
-            this.setState({
-                dataList: searchResult
-            })
-        } else {
-            this.setState({
-                dataList: store.getState().expenses.expenses
-            })
-        }
-    }
-
-    handleSearchChange = (e) => {
-        this.setState({
-            searchValue: e.target.value
-        })
-    }
-
-    handleSearchKeyPress = (e) => {
-        if (e.key === "Enter") {
-            this.handleSearch(e);
-        }
-    }
-
-    handleAddExpense = (e) => {
-        this.setState({
-            isShow: !this.state.isShow
-        });
-    }
-
-    handleCellClick = (params) => {
-        this.props.navigate(`/expense/${params.id}`);
-    }
-
-    loadData = () => {
-        this.setState({ dataList: store.getState().expenses.expenses });
-    }
-
-    editOnClick = (id) => {
-        this.props.navigate(`/expense/${id}`, {
-            state: {
-                isEdit: true
-            }
-        });
-    }
-
-    viewOnClick = (id) => {
-        this.props.navigate(`/expense/${id}`, {
-            state: {
-                isEdit: false
-            }
-        });
-    }
-
-    deleteOnClick = (id) => {
-        const action = expenseActionCreators.deleteExpense(id);
-        this.props.expenses(action);
-        this.loadData();
+    handleOnClick = (e) => {
+        this.props.navigate('/expenses');
     }
 
     render() {
-        const elements = this.state.dataList.map(x => {
-            return <ExpenseCard
-                {...this.props}
-                deleteOnClick={(e) => this.deleteOnClick(e, x.id)}
-                editOnClick={(e) => this.editOnClick(e, x.id)}
-                viewOnClick={(e) => this.viewOnClick(e, x.id)}
-                key={x.id}
-                data={x} />
-        })
-
         return (
-            <div className='page-content'>
-                {
-                    this.state.isShow && (<ExpenseCreate
-                        loadData={this.loadData}
-                        handleCancelClick={this.handleAddExpense} />)
-                }
-                <div className='home-containers'>
-                    <div className='home-title'>
-                        Personal Expense Manager
-                    </div>
-                    <div className='actions-form'>
-                        <div className='actions-left'>
-                            <Button className='btn-add' variant="contained"
-                                onClick={(e) => this.handleAddExpense(e)}>Add Expense</Button>
+            <>
+                <div className='page-content home-page'>
+                    <div className='spent'>
+                        <div className='spent-title'>
+                            You're Spent
                         </div>
-                        <div className='action-right'>
-                            <input
-                                value={this.state.searchValue}
-                                onChange={(e) => this.handleSearchChange(e)}
-                                onKeyPress={(e) => this.handleSearchKeyPress(e)}
-                                className='input-search'
-                                placeholder='Search'
-                            />
-                            <button className='btn-create btn-search'
-                                onClick={(e) => this.handleSearch(e)}>Search</button>
+                        <div className='spent-data'>
+                            <div className='left'>
+                                <div className='left-value'>$15</div>
+                                <div className='left-text'>so far this month</div>
+                            </div>
+                            <div className='right'>
+                                <div className='info'>$15 <span>today</span></div>
+                                <div className='info'>$5 <span>yesterday</span></div>
+                                <button className='see-more'
+                                    onClick={(e) => this.handleOnClick(e)}>See more</button>
+                            </div>
                         </div>
                     </div>
-                    <div className='data'>
-                        {
-                            elements
-                        }
+                    <div className='list-data'>
+                        <div className='content'>
+                            <div className='content-title'>Groceries</div>
+                            <div className='content-list'>
+                                <div className='content-header'>
+                                    <span>Pass average</span>
+                                    <span>This month</span>
+                                    <span>Spent Extra</span>
+                                </div>
+                                <div className='content-row'>
+                                    <span>$38.5</span>
+                                    <span className='col-active'>$57</span>
+                                    <span>$18.5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='content'>
+                            <div className='content-title' style={{ "--border-bottom": '#009900' }}>Commute</div>
+                            <div className='content-list'>
+                                <div className='content-header'>
+                                    <span>Pass average</span>
+                                    <span>This month</span>
+                                    <span>Spent Extra</span>
+                                </div>
+                                <div className='content-row'>
+                                    <span>$38.5</span>
+                                    <span className='col-active'>$57</span>
+                                    <span>$18.5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='content'>
+                            <div className='content-title' style={{ "--border-bottom": '#3333ff' }} >Eating Out</div>
+                            <div className='content-list'>
+                                <div className='content-header'>
+                                    <span>Pass average</span>
+                                    <span>This month</span>
+                                    <span>Spent Extra</span>
+                                </div>
+                                <div className='content-row'>
+                                    <span>$38.5</span>
+                                    <span className='col-active'>$57</span>
+                                    <span>$18.5</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        ...state
-    };
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        expenses: (action) => dispatch(action)
-    }
-}
 
 function WithNavigate(props) {
     let nav = useNavigate();
     return <Home {...props} navigate={nav} />;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);
+export default WithNavigate;

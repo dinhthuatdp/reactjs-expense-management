@@ -1,7 +1,8 @@
 .card {
   $border-color: #e0e0e0;
-  $gb-color: #fff;
+  $gb-color: #f3f2f3;
   $color-gray: #a4a2a4;
+  $color-gray-hover: #fff;
 
   position: relative;
   min-height: 2rem;
@@ -14,9 +15,12 @@
   background-color: $gb-color;
   margin: 0.2rem;
   border-radius: 0.4rem;
+  transition: background-color 0.3s linear;
+
   &:hover {
     box-shadow: 0 0 1px 0px grey;
     transform: translate(1px, 1px);
+    background-color: $color-gray-hover;
   }
 
   .card-group {

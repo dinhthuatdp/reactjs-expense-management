@@ -1,0 +1,206 @@
+@import "../../Styles/Common.scss";
+@import "../../Styles/variables";
+
+@mixin MediaQuery($type) {
+  @media screen and (max-width: $type) {
+    @content;
+  }
+}
+
+.expenses-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 1rem;
+  background-color: $background-color;
+}
+
+.expenses-containers {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .actions-form {
+    padding: 1rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include MediaQuery($lg) {
+    }
+
+    @include MediaQuery($md1) {
+      // padding: 1rem 0;
+      // margin: 0;
+      // width: 100%;
+      // display: flex;
+      // justify-content: space-between;
+      // align-items: center;
+      // font-size: 4rem;
+    }
+
+    @include MediaQuery($md) {
+      padding: 1rem 0;
+      margin: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 4rem;
+      gap: 1rem;
+    }
+
+    @include MediaQuery($ssm1) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      padding-top: 1rem;
+      width: 100%;
+    }
+
+    @include MediaQuery($ssm) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      padding-top: 1rem;
+      width: 100%;
+    }
+
+    .actions-left {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @include MediaQuery($sm) {
+        justify-content: flex-start;
+      }
+      @include MediaQuery($ssm1) {
+        width: 100%;
+      }
+      @include MediaQuery($ssm) {
+        width: 100%;
+      }
+    }
+    .action-right {
+      float: right;
+      display: flex;
+
+      @include MediaQuery($md1) {
+        // width: 30rem;
+        // display: flex;
+        // justify-content: flex-end;
+        // align-items: center;
+        // flex-direction: row;
+      }
+      @include MediaQuery($md) {
+        // display: flex;
+        // justify-content: center;
+        // align-items: flex-start;
+        // flex-direction: column;
+        // gap: 0.5rem;
+      }
+      @include MediaQuery($ssm1) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      @include MediaQuery($ssm) {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .btn-search {
+        @include MediaQuery($ssm) {
+          width: 4rem;
+          height: 100%;
+          font-size: 0.5rem;
+          margin: 0;
+        }
+        @include MediaQuery($ssm1) {
+          width: 4rem;
+          height: 100%;
+          font-size: 0.5rem;
+          margin: 0;
+        }
+      }
+
+      .input-search {
+        width: 20rem;
+        padding: 0.7rem 0.5rem;
+        border: none;
+        border-radius: 0.3rem;
+        margin-right: 1rem;
+        outline: none;
+
+        @include MediaQuery($ssm) {
+          width: 100%;
+          margin: 0;
+        }
+
+        @include MediaQuery($md) {
+          // margin: 15px;
+        }
+
+        @include MediaQuery($ssm1) {
+          width: 100%;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .expenses-title {
+    text-align: start;
+    color: $text-color-1;
+    width: 100%;
+    border-bottom: 1px solid $border-color;
+    font-size: 2rem;
+
+    @include MediaQuery($lg) {
+      font-size: 1rem;
+    }
+
+    @include MediaQuery($md1) {
+      font-size: 2rem;
+    }
+
+    @include MediaQuery($md) {
+      font-size: 1rem;
+    }
+
+    @include MediaQuery($ssm1) {
+      font-size: 1rem;
+    }
+
+    @include MediaQuery($ssm) {
+      font-size: 1rem;
+    }
+  }
+}
+.data {
+  height: 30rem;
+  width: 100%;
+
+  @include MediaQuery($md1) {
+    .data-grid {
+      font-size: 1.2rem;
+    }
+  }
+
+  @include MediaQuery($md) {
+    .data-grid {
+      font-size: 1rem;
+    }
+  }
+}
