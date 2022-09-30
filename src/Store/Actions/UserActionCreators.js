@@ -3,14 +3,16 @@ import { LOGIN, SIGN_UP } from './ActionTypes';
 const login = (user) => ({
     type: LOGIN,
     payload: {
-        username: user.username,
-        password: user.password
+        email: user.email,
+        password: user.password,
+        token: user.token
     }
 })
 
-const signUp = (email, password, confirmPassword) => ({
+const signUp = (username, email, password, confirmPassword) => ({
     type: SIGN_UP,
     payload: {
+        username,
         email,
         password,
         confirmPassword

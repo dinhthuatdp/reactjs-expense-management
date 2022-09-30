@@ -4,12 +4,13 @@ import {
     Link,
     useNavigate
 } from 'react-router-dom';
-
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 
+import store from '../../Store/Store';
 import './Login.scss';
-import userActionCreators from '../../Store/Actions/UserActionCreators'
+import userActionCreators from '../../Store/Actions/UserActionCreators';
+import AuthApi from '../../api/authApi';
 
 const LOGIN_BY_FB = 'loginByFacebook';
 const LOGIN_BY_GG = 'loginByGoogle';
@@ -18,8 +19,9 @@ class Login extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log('check getState userCreated', store.getState().users)
         this.state = {
-            username: '',
+            username: store.getState().users.userCreated,
             password: '',
             isShowPassword: false
         }
@@ -40,13 +42,29 @@ class Login extends React.Component {
     handleLoginClickButton(username, password) {
         console.log('>>>>handleLoginClickButton:::check props ', this.props)
 
-        const action = userActionCreators.login({
-            username: username,
-            password: password
-        });
-        this.props.login(action);
-        console.log('>>>> check handle login: ', this.props)
-        this.props.navigate('/')
+        let user = {
+            email: username,
+            password: password,
+            token: ''
+        };
+
+        const login = async () => {
+            try {
+                const response = await AuthApi.login(user);
+                if (response.status &&
+                    response.status.statusCode != 200) {
+                    console.log('Login error:', response.message)
+                    return;
+                }
+                user.token = response.data.token;
+                const action = userActionCreators.login(user);
+                this.props.login(action);
+                this.props.navigate('/')
+            } catch (error) {
+                console.log('Login failed', error);
+            }
+        }
+        login();
     }
 
     handleLoginSocial(e) {
@@ -66,7 +84,7 @@ class Login extends React.Component {
     render() {
         const formikProps = {
             initialValues: {
-                username: '',
+                username: store.getState().users.userCreated,
                 password: ''
             },
             validateOnBlur: true,
