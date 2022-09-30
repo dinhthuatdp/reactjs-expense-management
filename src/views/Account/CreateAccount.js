@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    Link
+    Link,
+    useNavigate
 } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import './CreateAccount.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators';
 import { Formik, ErrorMessage } from "formik";
+import AuthApi from '../../api/authApi';
 
 const INPUT_EMAIL_ID = 'inputEmailId';
 const INPUT_PASSWORD_ID = 'inputPasswordId';
@@ -31,11 +33,34 @@ class CreateAccount extends React.Component {
         }
     }
 
-    handleSignup = (email, password, confirmPassword) => {
-        const action = userActionCreators.signUp(email,
+    handleSignup = (username, email, password, confirmPassword) => {
+        var userRequest = {
+            username,
+            email,
             password,
-            confirmPassword);
-        this.props.signUp(action);
+            confirmPassword
+        };
+
+        const signUp = async (user) => {
+            try {
+                const response = await AuthApi.register(user);
+                if (response.status &&
+                    response.status.statusCode != 200) {
+                    console.log('Register error:', response.message)
+                    return;
+                }
+
+                const action = userActionCreators.signUp(user.username,
+                    user.email,
+                    user.password,
+                    user.confirmPassword);
+                this.props.signUp(action);
+                this.props.navigate('/login')
+            } catch (error) {
+                console.log('Register failed', error);
+            }
+        }
+        signUp(userRequest);
     }
 
     handleShowHidePassword = (e) => {
@@ -60,7 +85,7 @@ class CreateAccount extends React.Component {
             onSubmit: async (formValues, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 try {
-                    this.handleSignup(formValues.email, formValues.password, formValues.confirmPassword)
+                    this.handleSignup(formValues.email, formValues.email, formValues.password, formValues.confirmPassword)
                     resetForm(true);
                 } catch (e) {
                     console.error(e);
@@ -183,4 +208,9 @@ const validationSchema = Yup.object().shape({
         })
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <CreateAccount {...props} navigate={navigate} />
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);

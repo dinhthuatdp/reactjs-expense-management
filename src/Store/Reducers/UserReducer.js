@@ -1,26 +1,19 @@
 import { LOGIN, SIGN_UP } from '../Actions/ActionTypes'
 
 const initialState = {
-    users: [
-        { id: 1, email: 'user1@gmail.com', password: '123456' },
-        { id: 2, email: 'user2@gmail.com', password: '222222' },
-        { id: 3, email: 'user3@gmail.com', password: '333333' }
-    ]
+    userCreated: ''
 }
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN:
+            console.log('UserReducer LOGIN check action: ', action.payload);
+            localStorage.setItem('token', action.payload.token);
             return state;
         case SIGN_UP:
-            var newState = state.users;
-            newState.push({
-                id: state.users.length + 1,
-                email: action.payload.email,
-                password: action.payload.password
-            });
+            console.log('UserReducer SIGN_UP check action: ', action.payload);
             return {
                 ...state,
-                users: newState
+                userCreated: action.payload.email
             };
         default:
             return state;
