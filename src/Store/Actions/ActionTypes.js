@@ -5,6 +5,7 @@ const GET_DATA = 'GET_DATA';
 const GET_DETAILS = 'GET_DETAILS';
 const DELETE_EXPENSE = 'DELETE_EXPENSE';
 const UPDATE_EXPENSE = 'UPDATE_EXPENSE';
+const LOGOUT = 'LOGOUT';
 
 export {
     LOGIN,
@@ -13,5 +14,6 @@ export {
     GET_DATA,
     GET_DETAILS,
     DELETE_EXPENSE,
-    UPDATE_EXPENSE
+    UPDATE_EXPENSE,
+    LOGOUT
 };

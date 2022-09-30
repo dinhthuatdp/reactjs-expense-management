@@ -39,11 +39,37 @@ $menu-item-hover: #382f2f;
   }
 
   .user-info {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     color: $white-color;
     cursor: pointer;
+    &:hover .user-menu {
+      display: flex;
+    }
+
+    .user-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      background-color: $app-bar-color;
+      align-items: flex-start;
+      flex-direction: column;
+      font-size: 1rem;
+      .user-menu-item {
+        color: $white-color;
+        text-align: start;
+        padding: 0.3rem 1rem;
+        width: 100%;
+        border-bottom: 1px solid gray;
+        &:hover {
+          background-color: $menu-item-hover;
+        }
+      }
+    }
 
     .user-avatar {
       width: 2.3rem;
@@ -53,6 +79,7 @@ $menu-item-hover: #382f2f;
       text-align: center;
       line-height: 1.9;
       font-size: 1.3rem;
+      text-transform: uppercase;
     }
     .user-name {
       font-size: 1.2rem;

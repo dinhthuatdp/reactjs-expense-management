@@ -1,4 +1,4 @@
-import { LOGIN, SIGN_UP } from './ActionTypes';
+import { LOGIN, SIGN_UP, LOGOUT } from './ActionTypes';
 
 const login = (user) => ({
     type: LOGIN,
@@ -19,9 +19,14 @@ const signUp = (username, email, password, confirmPassword) => ({
     }
 })
 
+const logout = () => ({
+    type: LOGOUT
+})
+
 const userCreators = {
     login,
-    signUp
+    signUp,
+    logout
 }
 
 export default userCreators;
