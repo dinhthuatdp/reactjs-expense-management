@@ -16,6 +16,10 @@ class AppBar extends React.Component {
                         <Link className='app-bar-menu-item' to="/about">About</Link>
                     </ul>
                 </div>
+                <div className='user-info'>
+                    <div className='user-avatar'>T</div>
+                    <div className='user-name'>Thuat</div>
+                </div>
             </div>
         );
     }
