@@ -11,10 +11,12 @@ $menu-item-hover: #382f2f;
 }
 
 .app-bar {
+  background-color: $app-bar-color;
   position: fixed;
-  width: 100%;
+  width: 150px;
   top: 0;
   z-index: 100;
+  display: flex;
 
   @include MediaQuery($lg) {
     width: 100%;
@@ -35,33 +37,61 @@ $menu-item-hover: #382f2f;
   @include MediaQuery($ssm) {
     width: 100%;
   }
-  .app-bar-menu-list {
-    background-color: $app-bar-color;
-    color: $menu-text;
+
+  .user-info {
     display: flex;
-    justify-content: right;
+    justify-content: center;
     align-items: center;
-    gap: 0.1rem;
-    min-height: 3rem;
-    font-size: 1rem;
+    color: $white-color;
+    cursor: pointer;
 
-    .app-bar-menu-item {
-      height: 3rem;
-      padding: 0 2rem;
+    .user-avatar {
+      width: 2.3rem;
+      height: 2.3rem;
+      background-color: #ca5252;
+      border-radius: 100%;
+      text-align: center;
+      line-height: 1.9;
+      font-size: 1.3rem;
+    }
+    .user-name {
+      font-size: 1.2rem;
+      text-align: center;
+      padding: 0 1rem;
+      max-width: 6rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  .app-bar-menu {
+    width: 100%;
+    .app-bar-menu-list {
+      color: $menu-text;
       display: flex;
-      justify-content: center;
+      justify-content: right;
       align-items: center;
-      text-transform: uppercase;
-      color: $white-color;
+      gap: 0.1rem;
+      min-height: 3rem;
+      font-size: 1rem;
 
-      a {
-        color: $menu-text;
-      }
+      .app-bar-menu-item {
+        height: 3rem;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        color: $white-color;
 
-      &:hover {
-        cursor: pointer;
-        background-color: $menu-item-hover;
-        font-weight: 600;
+        a {
+          color: $menu-text;
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: $menu-item-hover;
+          font-weight: 600;
+        }
       }
     }
   }
