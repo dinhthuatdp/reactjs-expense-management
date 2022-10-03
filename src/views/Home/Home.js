@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import './Home.scss';
+import RowGroup from '../../components/Groups/RowGroup';
 
 class Home extends React.Component {
 
@@ -10,6 +11,10 @@ class Home extends React.Component {
     }
 
     render() {
+        const headers = ['Pass average', 'This month', 'Spent Extra'];
+        const top1 = ['$38.5', '$57', '$18.5'];
+        const top2 = ['$39.5', '$57', '$17.5'];
+        const top3 = ['$49.5', '$57', '$7.5'];
         return (
             <>
                 <div className='page-content home-page'>
@@ -31,51 +36,20 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='list-data'>
-                        <div className='content'>
-                            <div className='content-title'>Groceries</div>
-                            <div className='content-list'>
-                                <div className='content-header'>
-                                    <span>Pass average</span>
-                                    <span>This month</span>
-                                    <span>Spent Extra</span>
-                                </div>
-                                <div className='content-row'>
-                                    <span>$38.5</span>
-                                    <span className='col-active'>$57</span>
-                                    <span>$18.5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='content'>
-                            <div className='content-title' style={{ "--border-bottom": '#009900' }}>Commute</div>
-                            <div className='content-list'>
-                                <div className='content-header'>
-                                    <span>Pass average</span>
-                                    <span>This month</span>
-                                    <span>Spent Extra</span>
-                                </div>
-                                <div className='content-row'>
-                                    <span>$38.5</span>
-                                    <span className='col-active'>$57</span>
-                                    <span>$18.5</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='content'>
-                            <div className='content-title' style={{ "--border-bottom": '#3333ff' }} >Eating Out</div>
-                            <div className='content-list'>
-                                <div className='content-header'>
-                                    <span>Pass average</span>
-                                    <span>This month</span>
-                                    <span>Spent Extra</span>
-                                </div>
-                                <div className='content-row'>
-                                    <span>$38.5</span>
-                                    <span className='col-active'>$57</span>
-                                    <span>$18.5</span>
-                                </div>
-                            </div>
-                        </div>
+                        <RowGroup
+                            title='Groceries'
+                            headers={headers}
+                            data={top1} />
+                        <RowGroup
+                            borderColor='#009900'
+                            title='Commute'
+                            headers={headers}
+                            data={top2} />
+                        <RowGroup
+                            borderColor='#3333ff'
+                            title='Eating Out'
+                            headers={headers}
+                            data={top3} />
                     </div>
                 </div>
             </>

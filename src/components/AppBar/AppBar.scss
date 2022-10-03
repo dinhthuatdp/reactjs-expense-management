@@ -13,30 +13,10 @@ $menu-item-hover: #382f2f;
 .app-bar {
   background-color: $app-bar-color;
   position: fixed;
-  width: 150px;
+  width: 100%;
   top: 0;
   z-index: 100;
   display: flex;
-
-  @include MediaQuery($lg) {
-    width: 100%;
-  }
-
-  @include MediaQuery($md1) {
-    width: 100%;
-  }
-
-  @include MediaQuery($md) {
-    width: 100%;
-  }
-
-  @include MediaQuery($ssm1) {
-    width: 100%;
-  }
-
-  @include MediaQuery($ssm) {
-    width: 100%;
-  }
 
   .user-info {
     position: relative;

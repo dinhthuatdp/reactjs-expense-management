@@ -2,9 +2,7 @@
 @import "../../Styles/variables";
 
 .home-page {
-  $col-width: 33.33%;
   background-color: $background-color;
-
   min-height: 100vh;
 
   .spent {
@@ -14,7 +12,6 @@
     justify-content: center;
     border: 1px solid gray;
     margin: 1rem 2rem 0 2rem;
-    border-bottom: none;
 
     .spent-title {
       color: #009900;
@@ -74,40 +71,6 @@
   .list-data {
     border: 1px solid gray;
     margin: 0 2rem;
-
-    .content {
-      margin: 0.5rem 5rem;
-      border-bottom: 1px solid gray;
-    }
-  }
-
-  .content-title {
-    --border-bottom: #ff3333;
-
-    text-align: start;
-    background-color: #d9d9d9;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 3px solid var(--border-bottom);
-    font-weight: 600;
-  }
-
-  .content-header {
-    background-color: #ecd9c6;
-    padding: 0.1rem 0;
-    margin-bottom: 0.2rem;
-  }
-  .content-header,
-  .content-row {
-    display: flex;
-    .col-active {
-      background-color: #b3ffcc;
-    }
-  }
-
-  .content-header span,
-  .content-row span {
-    width: $col-width;
-    padding: 0.5rem 0;
+    border-top: none;
   }
 }
