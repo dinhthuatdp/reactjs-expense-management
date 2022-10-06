@@ -10,6 +10,29 @@ $menu-item-hover: #382f2f;
   }
 }
 
+.sub-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background-color: $app-bar-color;
+  align-items: flex-start;
+  flex-direction: column;
+  font-size: 1rem;
+  transform: translateX(1.2rem);
+
+  .sub-menu-item {
+    color: $white-color;
+    text-align: start;
+    padding: 0.5rem 0rem;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    &:hover {
+      background-color: $menu-item-hover;
+    }
+  }
+}
 .app-bar {
   background-color: $app-bar-color;
   position: fixed;
@@ -25,30 +48,8 @@ $menu-item-hover: #382f2f;
     align-items: center;
     color: $white-color;
     cursor: pointer;
-    &:hover .user-menu {
+    &:hover .sub-menu {
       display: flex;
-    }
-
-    .user-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      left: 0;
-      background-color: $app-bar-color;
-      align-items: flex-start;
-      flex-direction: column;
-      font-size: 1rem;
-      .user-menu-item {
-        color: $white-color;
-        text-align: start;
-        padding: 0.3rem 1rem;
-        width: 100%;
-        border-bottom: 1px solid gray;
-        &:hover {
-          background-color: $menu-item-hover;
-        }
-      }
     }
 
     .user-avatar {
@@ -80,6 +81,13 @@ $menu-item-hover: #382f2f;
       gap: 0.1rem;
       min-height: 3rem;
       font-size: 1rem;
+
+      .menu-management {
+        position: relative;
+        &:hover .sub-menu {
+          display: flex;
+        }
+      }
 
       .app-bar-menu-item {
         height: 3rem;

@@ -12,6 +12,7 @@ import ExpenseList from './views/ExpenseList/ExpenseList';
 import About from './views/About/About';
 import ExpenseDetails from './views/Expense/ExpenseDetails';
 import Home from './views/Home/Home';
+import CategoryList from './views/Category/CategoryList';
 import MainPage from './components/MainPage';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path='/expenses' element={<MainPage><ExpenseList /></MainPage>} />
           <Route path='/expense/:id' element={<MainPage><ExpenseDetails /></MainPage>} />
           <Route path='/about' element={<MainPage><About /></MainPage>} />
+          <Route path='/categories' element={<MainPage><CategoryList /></MainPage>} />
         </Routes>
       </BrowserRouter>
     </div>

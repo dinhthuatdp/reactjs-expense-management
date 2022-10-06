@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Home.scss';
 import RowGroup from '../../components/Groups/RowGroup';
 import { hasPermission } from '../../helpers/jwt-helper';
+import categoryService from '../../services/categoryService';
 
 class Home extends React.Component {
     constructor(props) {
@@ -24,7 +25,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log('check permission final1', this.state.hasPermission);
         const headers = ['Pass average', 'This month', 'Spent Extra'];
         const top1 = ['$38.5', '$57', '$18.5'];
         const top2 = ['$39.5', '$57', '$17.5'];

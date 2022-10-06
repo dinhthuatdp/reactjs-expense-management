@@ -1,7 +1,9 @@
 import axiosClient from './axiosClient';
 
+const baseUrl = process.env.REACT_APP_API_URL_AUTH;
 const AuthApi = {
     login: (params) => {
+        axiosClient.defaults.baseURL = baseUrl;
         const url = '/Authenticate/login';
         return axiosClient.post(url, params);
     },

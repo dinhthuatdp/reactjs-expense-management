@@ -5,11 +5,12 @@
   $color-gray-hover: #fff;
 
   position: relative;
+  width: 100%;
   min-height: 2rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0rem;
   gap: 1rem;
   border: 1px solid $border-color;
   background-color: $gb-color;
@@ -29,6 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    padding-left: 1rem;
   }
   .card-col {
     width: 6rem;
@@ -44,12 +46,6 @@
     .btn-delete {
       font-size: 0.6rem;
       padding: 0.8rem;
-    }
-    .btn-edit {
-      background-color: orange;
-    }
-    .btn-delete {
-      background-color: #ff3030;
     }
   }
   .date {

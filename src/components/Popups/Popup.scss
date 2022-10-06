@@ -1,0 +1,26 @@
+$border-color: #a4a2a4;
+.popup-wrapper {
+  z-index: 100;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 0%);
+  min-width: 80%;
+  border: 1px solid $border-color;
+  border-radius: 0.3rem;
+  flex-direction: column;
+
+  .popup-title {
+    padding: 1rem;
+    font-size: 2.2rem;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid gray;
+    background-color: #7d7d7d;
+    color: #fff;
+  }
+  .popup-content {
+    min-height: 40vh;
+  }
+}

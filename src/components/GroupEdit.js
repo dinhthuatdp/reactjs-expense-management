@@ -7,7 +7,6 @@ import Dropdown from './Dropdown/Dropdown';
 class GroupEdit extends React.Component {
     constructor(props) {
         super(props);
-        console.log('check props GroupEdit', this.props)
         this.state = {
             text: this.props.text,
             data: this.props.data,
@@ -58,7 +57,7 @@ class GroupEdit extends React.Component {
                 <img className='file-img' src={this.state.data} />
             </>;
         } else {
-            inputElement = <input type={this.state.type}
+            inputElement = <input className='text-input' type={this.state.type}
                 value={this.state.data}
                 onChange={(e) => this.onChangeInput(e)} />;
         }

@@ -28,6 +28,10 @@ class AppBar extends React.Component {
         this.props.navigate('/login');
     }
 
+    handleUserInfoClick = (e) => {
+        e.preventDefault();
+    }
+
     componentDidMount() {
         const items = JSON.parse(localStorage.getItem('items'));
     }
@@ -54,15 +58,23 @@ class AppBar extends React.Component {
                         {/* <li className='app-bar-menu-item'><a href='/'>Home</a></li>
                         <li className='app-bar-menu-item'><a href='/about'>About</a></li> */}
                         <Link className='app-bar-menu-item' to="/">Home</Link>
+                        {/* <Link className='app-bar-menu-item menu-management' to="/">
+                        </Link> */}
+                        <div className='app-bar-menu-item menu-management'>Management
+                            <ul className='sub-menu'>
+                                <Link className='sub-menu-item' to="/categories">Categories</Link>
+                            </ul>
+                        </div>
                         <Link className='app-bar-menu-item' to="/about">About</Link>
                     </ul>
                 </div>
                 <div className='user-info'>
                     <div className='user-avatar'>{this.state.avatarText}</div>
                     <div className='user-name'>{this.state.email}</div>
-                    <ul className='user-menu'>
-                        <Link className='user-menu-item' to="/">User info</Link>
-                        <Link className='user-menu-item' to="/about"
+                    <ul className='sub-menu'>
+                        <Link className='sub-menu-item' to="/"
+                            onClick={(e) => this.handleUserInfoClick(e)}>User info</Link>
+                        <Link className='sub-menu-item' to="/about"
                             onClick={(e) => this.handleLogoutOnClick(e)}>Logout</Link>
                     </ul>
                 </div>
