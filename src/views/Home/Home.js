@@ -3,18 +3,33 @@ import { useNavigate } from 'react-router-dom';
 
 import './Home.scss';
 import RowGroup from '../../components/Groups/RowGroup';
+import { hasPermission } from '../../helpers/jwt-helper';
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            hasPermission: false
+        }
+    }
 
     handleOnClick = (e) => {
         this.props.navigate('/expenses');
     }
 
+    componentDidMount() {
+        this.setState({
+            hasPermission: hasPermission(['Admin', 'User'])
+        });
+    }
+
     render() {
+        console.log('check permission final1', this.state.hasPermission);
         const headers = ['Pass average', 'This month', 'Spent Extra'];
         const top1 = ['$38.5', '$57', '$18.5'];
         const top2 = ['$39.5', '$57', '$17.5'];
         const top3 = ['$49.5', '$57', '$7.5'];
+
         return (
             <>
                 <div className='page-content home-page'>

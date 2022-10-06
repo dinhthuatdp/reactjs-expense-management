@@ -52,7 +52,7 @@ class Login extends React.Component {
             try {
                 const response = await AuthApi.login(user);
                 if (response.status &&
-                    response.status.statusCode != 200) {
+                    response.status.statusCode !== 200) {
                     console.log('Login error:', response.message)
                     return;
                 }

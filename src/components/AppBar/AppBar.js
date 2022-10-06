@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
     Link,
-    useNavigate
+    useNavigate,
+    Navigate
 } from "react-router-dom";
 
 import './AppBar.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators';
+import { parseJwt, getRoles } from '../../helpers/jwt-helper';
 
 class AppBar extends React.Component {
 
@@ -22,7 +24,6 @@ class AppBar extends React.Component {
     handleLogoutOnClick = (e) => {
         e.preventDefault();
         const action = userActionCreators.logout();
-        console.log('xxx', this.props)
         this.props.logout(action);
         this.props.navigate('/login');
     }
@@ -32,6 +33,20 @@ class AppBar extends React.Component {
     }
 
     render() {
+        let isLogout = false;
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedJwt = parseJwt(token)
+            if (decodedJwt.exp * 1000 < Date.now()) {
+                isLogout = true;
+            }
+        } else {
+            isLogout = true;
+        }
+        if (isLogout) {
+            return <Navigate to='/login' />
+        }
+
         return (
             <div className='app-bar'>
                 <div className='app-bar-menu'>

@@ -45,7 +45,7 @@ class CreateAccount extends React.Component {
             try {
                 const response = await AuthApi.register(user);
                 if (response.status &&
-                    response.status.statusCode != 200) {
+                    response.status.statusCode !== 200) {
                     console.log('Register error:', response.message)
                     return;
                 }

@@ -17,7 +17,7 @@ class GroupInfo extends React.Component {
                 <div className='text'>{this.state.text}</div>
                 {
                     this.state.type === 'image' ?
-                        <img className='info-img' src={this.state.data} />
+                        <img alt='group image' className='info-img' src={this.state.data} />
                         :
                         <div className='info'>{this.state.data}</div>
                 }

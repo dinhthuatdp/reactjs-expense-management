@@ -19,6 +19,7 @@ const userReducer = (state = initialState, action) => {
         case LOGOUT:
             console.log('UserReducer LOGOUT check action: ', action.payload);
             localStorage.removeItem('token');
+            localStorage.removeItem('email');
             return state;
         default:
             return state;

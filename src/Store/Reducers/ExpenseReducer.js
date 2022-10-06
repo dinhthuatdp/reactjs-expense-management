@@ -38,7 +38,7 @@ const expenseReducer = (state = initialState, action) => {
                 expenseDetails: data
             };
         case DELETE_EXPENSE:
-            const newList = state.expenses.filter(x => x.id != action.payload);
+            const newList = state.expenses.filter(x => x.id !== action.payload);
             console.log('>>>> Check expense reducer DELETE_EXPENSE: ', newList);
             return {
                 ...state,
