@@ -63,6 +63,7 @@ class AppBar extends React.Component {
                         <div className='app-bar-menu-item menu-management'>Management
                             <ul className='sub-menu'>
                                 <Link className='sub-menu-item' to="/categories">Categories</Link>
+                                <Link className='sub-menu-item' to="/expenses">Expenses</Link>
                             </ul>
                         </div>
                         <Link className='app-bar-menu-item' to="/about">About</Link>

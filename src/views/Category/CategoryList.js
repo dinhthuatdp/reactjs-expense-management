@@ -12,7 +12,8 @@ class CategoryList extends React.Component {
         this.state = {
             isShowPopup: false,
             category: {
-                list: []
+                list: [],
+                newCategory: ''
             }
         }
     }
@@ -20,6 +21,10 @@ class CategoryList extends React.Component {
     componentDidMount() {
         const getCategories = async () => {
             const response = await categoryService.getAll();
+            if (!response) {
+                console.log('Login error');
+                return;
+            }
             if (response.status &&
                 response.status.statusCode !== 200) {
                 console.log('Login error:', response.message)
@@ -56,6 +61,20 @@ class CategoryList extends React.Component {
         console.log('handleDeleteOnClick clicked', id);
     }
 
+    handleOnClickAdd = (e) => {
+        console.log('handleOnClickAdd', this.state.category.newCategory);
+    }
+
+    handleOnChangeInput = (e) => {
+        this.setState({
+            ...this.state,
+            category: {
+                ...this.state.category,
+                newCategory: e.target.value
+            }
+        })
+    }
+
     render() {
         let elements = [];
         let actionElements = <></>;
@@ -81,10 +100,12 @@ class CategoryList extends React.Component {
                             title='Add New Category'>
                             <div className='popup-child'>
                                 <GroupEdit
+                                    onChange={(e) => this.handleOnChangeInput(e)}
                                     text='Name'
                                     type='text' />
                                 <div className='popup-actions'>
-                                    <button className='btn'>Add</button>
+                                    <button className='btn'
+                                        onClick={(e) => this.handleOnClickAdd(e)}>Add</button>
                                     <button className='btn btn-cancel'
                                         onClick={(e) => this.cancelOnClick(e)}>Cancel</button>
                                 </div>

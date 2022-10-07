@@ -4,8 +4,7 @@ import queryString from 'query-string';
 const axiosClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL_AUTH,
     headers: {
-        'content-type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'content-type': 'application/json'
     },
     paramsSerializer: params => queryString.stringify(params),
 });
@@ -13,6 +12,10 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(async (config) => {
     // Handle token.
     // console.log('check axios config handle token', config)
+    const accessToken = localStorage.getItem('token');
+    if (accessToken) {
+        config.headers.common = { Authorization: `Bearer ${accessToken}` };
+    }
     return config;
 })
 
