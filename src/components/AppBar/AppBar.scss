@@ -83,13 +83,6 @@ $menu-item-hover: #382f2f;
       min-height: 3rem;
       font-size: 1rem;
 
-      .menu-management {
-        position: relative;
-        &:hover .sub-menu {
-          display: flex;
-        }
-      }
-
       .app-bar-menu-item {
         height: 3rem;
         padding: 0 2rem;
@@ -108,6 +101,19 @@ $menu-item-hover: #382f2f;
           background-color: $menu-item-hover;
           font-weight: 600;
         }
+      }
+
+      .menu-management {
+        position: relative;
+        &:hover .sub-menu {
+          display: flex;
+        }
+      }
+      .item-select {
+        background-color: $app-bar-color;
+        border: none;
+        outline: none;
+        padding: 0;
       }
     }
   }

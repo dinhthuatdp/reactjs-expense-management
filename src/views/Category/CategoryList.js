@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 
 import categoryService from '../../services/categoryService';
 import './CategoryList.scss';
@@ -76,15 +77,16 @@ class CategoryList extends React.Component {
     }
 
     render() {
+        const { t } = this.props;
         let elements = [];
         let actionElements = <></>;
         if (this.state.category.list) {
             elements = this.state.category.list.map(x => {
                 actionElements = <>
                     <button className='btn btn-edit'
-                        onClick={(e) => this.handleEditOnClick(e, x.id)}>Edit</button>
+                        onClick={(e) => this.handleEditOnClick(e, x.id)}>{t('label.edit')}</button>
                     <button className='btn btn-delete'
-                        onClick={(e) => this.handleDeleteOnClick(e, x.id)}>Delete</button>
+                        onClick={(e) => this.handleDeleteOnClick(e, x.id)}>{t('label.delete')}</button>
                 </>
                 return <Card key={x.id}
                     actions={actionElements}
@@ -105,16 +107,16 @@ class CategoryList extends React.Component {
                                     type='text' />
                                 <div className='popup-actions'>
                                     <button className='btn'
-                                        onClick={(e) => this.handleOnClickAdd(e)}>Add</button>
+                                        onClick={(e) => this.handleOnClickAdd(e)}>{t('label.add')}</button>
                                     <button className='btn btn-cancel'
-                                        onClick={(e) => this.cancelOnClick(e)}>Cancel</button>
+                                        onClick={(e) => this.cancelOnClick(e)}>{t('label.cancel')}</button>
                                 </div>
                             </div>
                         </Popup>
-                        <div className='page-title'>Category</div>
+                        <div className='page-title'>{t('label.category')}</div>
                         <div className='actions'>
                             <button className='btn'
-                                onClick={(e) => this.openPopupHandler(e)}>Add New</button>
+                                onClick={(e) => this.openPopupHandler(e)}>{t('label.add')}</button>
                         </div>
                         <div className='list'>
                             {elements}
@@ -126,4 +128,4 @@ class CategoryList extends React.Component {
     }
 }
 
-export default CategoryList;
+export default withTranslation(['common'])(CategoryList);

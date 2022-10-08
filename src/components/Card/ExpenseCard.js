@@ -1,4 +1,5 @@
 import React from 'react';
+import { withTranslation } from 'react-i18next';
 
 import './ExpenseCard.scss';
 
@@ -14,6 +15,7 @@ class ExpenseCard extends React.Component {
             category,
             attachment
         } = this.props.data;
+        const { t } = this.props;
 
         return (
             <>
@@ -40,11 +42,11 @@ class ExpenseCard extends React.Component {
                     </div>
                     <div className='actions'>
                         <button className='btn-view btn'
-                            onClick={(e) => this.props.viewOnClick(id)}>View</button>
+                            onClick={(e) => this.props.viewOnClick(id)}>{t('label.view')}</button>
                         <button value={id} className='btn-edit btn'
-                            onClick={(e) => this.props.editOnClick(id)}>Edit</button>
+                            onClick={(e) => this.props.editOnClick(id)}>{t('label.edit')}</button>
                         <button className='btn-delete btn'
-                            onClick={(e) => this.props.deleteOnClick(id)}>Delete</button>
+                            onClick={(e) => this.props.deleteOnClick(id)}>{t('label.delete')}</button>
                     </div>
                 </div>
             </>
@@ -52,4 +54,4 @@ class ExpenseCard extends React.Component {
     }
 }
 
-export default ExpenseCard;
+export default withTranslation(['common'])(ExpenseCard);

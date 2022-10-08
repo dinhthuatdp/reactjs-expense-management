@@ -3,11 +3,12 @@ import { Formik, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
+import { withTranslation } from 'react-i18next';
 
 import './ExpenseCreate.scss';
 import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import Dropdown from '../../components/Dropdown/Dropdown';
-
+import categoryService from '../../services/categoryService';
 
 class ExpenseCreate extends React.Component {
 
@@ -30,8 +31,37 @@ class ExpenseCreate extends React.Component {
             description: '',
             category: '',
             attachment: '',
-            dropdownData: dropdownData
+            dropdownData: dropdownData,
+            categories: []
         }
+    }
+    getCategories = async () => {
+        const response = await categoryService.getAll();
+        if (!response) {
+            console.log('Login error');
+            return;
+        }
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Login error:', response.message)
+            return;
+        }
+        if (response.data) {
+            let data = [];
+            response.data.forEach(x => {
+                data.push({
+                    value: x.id,
+                    displayValue: x.name
+                });
+            });
+            this.setState({
+                categories: data,
+                category: data[0].value
+            });
+        }
+    }
+    async componentDidMount() {
+        await this.getCategories();
     }
 
     handleAddClick = (type, date, cost, description, category, attachment) => {
@@ -51,13 +81,15 @@ class ExpenseCreate extends React.Component {
     }
 
     render() {
+        const { category, categories, type } = this.state;
+        const { t } = this.props;
         const formikProps = {
             initialValues: {
-                type: this.state.type,
+                type: type,
                 date: moment().utc().format('yyyy-MM-DD'),
                 cost: '',
                 description: '',
-                category: '',
+                category: category,
                 attachment: ''
             },
             validateOnBlur: true,
@@ -77,6 +109,7 @@ class ExpenseCreate extends React.Component {
                     console.error(e);
                 }
             },
+            enableReinitialize: true,
         }
         return (
             <Formik {...formikProps} >
@@ -85,10 +118,10 @@ class ExpenseCreate extends React.Component {
                         <form className='create-form'
                             onSubmit={props.handleSubmit}>
                             <div className='title'>
-                                Add Expense
+                                {t('label.addExpense')}
                             </div>
                             <div className='input'>
-                                <div className='type-input'>Type</div>
+                                <div className='type-input'>{t('label.type')}</div>
                                 <Dropdown list={this.state.dropdownData}
                                     name='type'
                                     value={this.state.type}
@@ -96,7 +129,7 @@ class ExpenseCreate extends React.Component {
                                 />
                             </div>
                             <div className='date-input input'>
-                                <div className='lbl-date'>Date</div>
+                                <div className='lbl-date'>{t('label.date')}</div>
                                 <input type='date' placeholder='yyyy-MM-dd'
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
@@ -105,7 +138,7 @@ class ExpenseCreate extends React.Component {
                             </div>
                             <div className='cost-input input'>
                                 <input type='text'
-                                    placeholder='Enter cost'
+                                    placeholder={t('label.enterCost')}
                                     name='cost'
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
@@ -115,21 +148,21 @@ class ExpenseCreate extends React.Component {
                                 </ErrorMessage>
                             </div>
                             <div className='description-input input'>
-                                <input type='text' placeholder='Enter description'
+                                <input type='text' placeholder={t('label.enterDescription')}
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
                                     name='description'
                                     value={props.values.description} />
                             </div>
                             <div className='category-input input'>
-                                <input type='text' placeholder='Enter category'
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <Dropdown list={categories}
                                     name='category'
-                                    value={props.values.category} />
+                                    value={props.values.category}
+                                    onChange={props.handleChange}
+                                />
                             </div>
                             <div className='attachment-input input'>
-                                <input type='file' placeholder='Enter attachment'
+                                <input type='file' placeholder={t('label.chooseAttachment')}
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
                                     name='attachment'
@@ -166,4 +199,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExpenseCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation(['common'])(ExpenseCreate));

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
     useNavigate
 } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
 
 import './ExpenseList.scss';
 import ExpenseCreate from '../Expense/ExpenseCreate';
@@ -101,23 +102,25 @@ class ExpenseList extends React.Component {
                 viewOnClick={(e) => this.viewOnClick(e, x.id)}
                 key={x.id}
                 data={x} />
-        })
+        });
+        const { t } = this.props;
 
         return (
             <div className='page-content'>
                 {
-                    this.state.isShow && (<ExpenseCreate
+                    this.state.isShow &&
+                    (<ExpenseCreate
                         loadData={this.loadData}
                         handleCancelClick={this.handleAddExpense} />)
                 }
                 <div className='expenses-containers'>
                     <div className='expenses-title'>
-                        Personal Expense Manager
+                        {t('label.personalExpenseManagement')}
                     </div>
                     <div className='actions-form'>
                         <div className='actions-left'>
                             <Button className='btn-add' variant="contained"
-                                onClick={(e) => this.handleAddExpense(e)}>Add Expense</Button>
+                                onClick={(e) => this.handleAddExpense(e)}>{t('label.add')}</Button>
                         </div>
                         <div className='action-right'>
                             <input
@@ -125,10 +128,10 @@ class ExpenseList extends React.Component {
                                 onChange={(e) => this.handleSearchChange(e)}
                                 onKeyPress={(e) => this.handleSearchKeyPress(e)}
                                 className='input-search'
-                                placeholder='Search'
+                                placeholder={t('label.search')}
                             />
                             <button className='btn-create btn-search'
-                                onClick={(e) => this.handleSearch(e)}>Search</button>
+                                onClick={(e) => this.handleSearch(e)}>{t('label.search')}</button>
                         </div>
                     </div>
                     <div className='data'>
@@ -159,4 +162,4 @@ function WithNavigate(props) {
     return <ExpenseList {...props} navigate={nav} />;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation(['common'])(WithNavigate));
