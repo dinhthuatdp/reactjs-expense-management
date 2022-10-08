@@ -12,6 +12,21 @@ class Dropdown extends React.Component {
         }
     }
 
+    componentDidUpdate(prevState, prevProps) {
+        if (prevProps.list !== this.props.list) {
+            this.setState({
+                list: this.props.list,
+                value: this.props.value
+            });
+        }
+        // else if (prevProps.value !== this.props.value) {
+        //     console.log('check value', this.props)
+        //     // this.setState({
+        //     //     value: this.props.value
+        //     // });
+        // }
+    }
+
     handleOnChange = (e) => {
         this.setState({
             value: e.target.value
@@ -29,7 +44,8 @@ class Dropdown extends React.Component {
         return (
             <>
                 {
-                    (this.state.list && this.state.list.length > 0) && (
+                    (this.state.list &&
+                        this.state.list.length > 0) && (
                         <select value={this.state.value}
                             name={this.props.name}
                             onChange={(e) => this.handleOnChange(e)}

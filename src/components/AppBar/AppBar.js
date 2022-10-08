@@ -5,10 +5,12 @@ import {
     useNavigate,
     Navigate
 } from "react-router-dom";
+import { withTranslation } from 'react-i18next'
 
 import './AppBar.scss';
 import userActionCreators from '../../Store/Actions/UserActionCreators';
-import { parseJwt, getRoles } from '../../helpers/jwt-helper';
+import { parseJwt } from '../../helpers/jwt-helper';
+import i18n from '../../i18n';
 
 class AppBar extends React.Component {
 
@@ -18,6 +20,7 @@ class AppBar extends React.Component {
         this.state = {
             avatarText: localStorage.getItem('email')?.substring(0, 1),
             email: localStorage.getItem('email'),
+            lang: 'vi'
         }
     }
 
@@ -33,11 +36,18 @@ class AppBar extends React.Component {
     }
 
     componentDidMount() {
-        const items = JSON.parse(localStorage.getItem('items'));
+    }
+
+    onChangeLang = (e) => {
+        this.setState({
+            lang: e.target.value
+        });
+        i18n.changeLanguage(e.target.value);
     }
 
     render() {
         let isLogout = false;
+        const { t } = this.props;
         const token = localStorage.getItem('token');
         if (token) {
             const decodedJwt = parseJwt(token)
@@ -55,18 +65,21 @@ class AppBar extends React.Component {
             <div className='app-bar'>
                 <div className='app-bar-menu'>
                     <ul className='app-bar-menu-list'>
-                        {/* <li className='app-bar-menu-item'><a href='/'>Home</a></li>
-                        <li className='app-bar-menu-item'><a href='/about'>About</a></li> */}
-                        <Link className='app-bar-menu-item' to="/">Home</Link>
-                        {/* <Link className='app-bar-menu-item menu-management' to="/">
-                        </Link> */}
-                        <div className='app-bar-menu-item menu-management'>Management
+                        <Link className='app-bar-menu-item' to="/">{t('appBar.menuHome')}</Link>
+                        <div className='app-bar-menu-item menu-management'>{t('appBar.menuManagement')}
                             <ul className='sub-menu'>
-                                <Link className='sub-menu-item' to="/categories">Categories</Link>
-                                <Link className='sub-menu-item' to="/expenses">Expenses</Link>
+                                <Link className='sub-menu-item' to="/categories">{t('appBar.menuManagement.categories')}</Link>
+                                <Link className='sub-menu-item' to="/expenses">{t('appBar.menuManagement.expenses')}</Link>
                             </ul>
                         </div>
-                        <Link className='app-bar-menu-item' to="/about">About</Link>
+                        <Link className='app-bar-menu-item' to="/about">{t('appBar.menuAbout')}</Link>
+                        <select
+                            className='app-bar-menu-item item-select'
+                            value={this.state.lang}
+                            onChange={(e) => this.onChangeLang(e)}>
+                            <option className='item-option' value='vi'>{t('appBar.menuLang.vietnamese')}</option>
+                            <option className='item-option' value='en'>{t('appBar.menuLang.english')}</option>
+                        </select>
                     </ul>
                 </div>
                 <div className='user-info'>
@@ -101,4 +114,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithNavigate);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation(['common'])(WithNavigate));

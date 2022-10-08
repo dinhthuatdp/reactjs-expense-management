@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
 
 import './Home.scss';
 import RowGroup from '../../components/Groups/RowGroup';
 import { hasPermission } from '../../helpers/jwt-helper';
-import categoryService from '../../services/categoryService';
 
 class Home extends React.Component {
     constructor(props) {
@@ -25,7 +25,8 @@ class Home extends React.Component {
     }
 
     render() {
-        const headers = ['Pass average', 'This month', 'Spent Extra'];
+        const { t } = this.props;
+        const headers = [t('label.passAverage'), t('label.thisMonth'), t('label.spentExtra')];
         const top1 = ['$38.5', '$57', '$18.5'];
         const top2 = ['$39.5', '$57', '$17.5'];
         const top3 = ['$49.5', '$57', '$7.5'];
@@ -35,18 +36,18 @@ class Home extends React.Component {
                 <div className='page-content home-page'>
                     <div className='spent'>
                         <div className='spent-title'>
-                            You're Spent
+                            {t('label.yourSpent')}
                         </div>
                         <div className='spent-data'>
                             <div className='left'>
                                 <div className='left-value'>$15</div>
-                                <div className='left-text'>so far this month</div>
+                                <div className='left-text'>{t('label.soFarThisMonth')}</div>
                             </div>
                             <div className='right'>
-                                <div className='info'>$15 <span>today</span></div>
-                                <div className='info'>$5 <span>yesterday</span></div>
+                                <div className='info'>$15 <span>{t('label.today')}</span></div>
+                                <div className='info'>$5 <span>{t('label.yesterday')}</span></div>
                                 <button className='see-more'
-                                    onClick={(e) => this.handleOnClick(e)}>See more</button>
+                                    onClick={(e) => this.handleOnClick(e)}>{t('label.seeMore')}</button>
                             </div>
                         </div>
                     </div>
@@ -78,4 +79,4 @@ function WithNavigate(props) {
     return <Home {...props} navigate={nav} />;
 }
 
-export default WithNavigate;
+export default withTranslation(['common', 'text'])(WithNavigate);
