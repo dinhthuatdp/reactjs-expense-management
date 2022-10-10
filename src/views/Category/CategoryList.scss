@@ -1,6 +1,11 @@
 @import "../../Styles/Common.scss";
 @import "../../Styles/variables";
 
+.error-category-new {
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
 .page-wrapper {
   position: relative;
   padding: 2rem;

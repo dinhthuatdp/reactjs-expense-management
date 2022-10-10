@@ -1,5 +1,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import categoryService from '../../services/categoryService';
 import './CategoryList.scss';
@@ -42,7 +44,11 @@ class CategoryList extends React.Component {
 
     openPopupHandler = (e) => {
         this.setState({
-            isShowPopup: !this.state.isShowPopup
+            isShowPopup: !this.state.isShowPopup,
+            category: {
+                ...this.state.category,
+                newCategory: ''
+            }
         });
     }
 
@@ -62,18 +68,12 @@ class CategoryList extends React.Component {
         console.log('handleDeleteOnClick clicked', id);
     }
 
-    handleOnClickAdd = (e) => {
-        console.log('handleOnClickAdd', this.state.category.newCategory);
-    }
-
-    handleOnChangeInput = (e) => {
+    handleOnClickAdd = (newCategory) => {
+        // e.preventDefault();
+        console.log('handleOnClickAdd', newCategory);
         this.setState({
-            ...this.state,
-            category: {
-                ...this.state.category,
-                newCategory: e.target.value
-            }
-        })
+            isShowPopup: false,
+        });
     }
 
     render() {
@@ -93,25 +93,60 @@ class CategoryList extends React.Component {
                     text={x.name} />;
             });
         }
-
+        const formikProps = {
+            initialValues: {
+                newCategory: ''
+            },
+            validateOnBlur: true,
+            validateOnchange: true,
+            validationSchema: Yup.object().shape({
+                newCategory: Yup.string().required()
+            }),
+            onSubmit: async (formValues, { setSubmitting, resetForm }) => {
+                setSubmitting(true);
+                try {
+                    this.handleOnClickAdd(formValues.newCategory);
+                    resetForm(true);
+                } catch (e) {
+                    console.error(e);
+                }
+            },
+            enableReinitialize: true,
+        }
         return (
             <>
                 <div className='page-content'>
                     <div className='page-wrapper'>
                         <Popup isShow={this.state.isShowPopup}
                             title='Add New Category'>
-                            <div className='popup-child'>
-                                <GroupEdit
-                                    onChange={(e) => this.handleOnChangeInput(e)}
-                                    text='Name'
-                                    type='text' />
-                                <div className='popup-actions'>
-                                    <button className='btn'
-                                        onClick={(e) => this.handleOnClickAdd(e)}>{t('label.add')}</button>
-                                    <button className='btn btn-cancel'
-                                        onClick={(e) => this.cancelOnClick(e)}>{t('label.cancel')}</button>
-                                </div>
-                            </div>
+                            <Formik {...formikProps}>
+                                {props => (
+                                    <form className='popup-child'
+                                        onSubmit={props.handleSubmit}>
+                                        <GroupEdit
+                                            onChange={props.handleChange}
+                                            text='Name'
+                                            id='newCategory'
+                                            data={props.values.newCategory}
+                                            name='newCategory'
+                                            onBlur={props.handleBlur}
+                                            type='text' />
+                                        <ErrorMessage name='newCategory' >
+                                            {errMsg => <span className="error-message error-category-new">{errMsg}</span>}
+                                        </ErrorMessage>
+                                        <div className='popup-actions'>
+                                            <button
+                                                type='submit'
+                                                disabled={!props.isValid}
+                                                className={!props.isValid ? 'disable-button btn' : 'btn'}
+                                            >{t('label.add')}</button>
+                                            <button className='btn btn-cancel'
+                                                type='button'
+                                                onClick={(e) => this.cancelOnClick(e)}>{t('label.cancel')}</button>
+                                        </div>
+                                    </form>
+                                )}
+                            </Formik>
                         </Popup>
                         <div className='page-title'>{t('label.category')}</div>
                         <div className='actions'>
