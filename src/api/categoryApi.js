@@ -8,7 +8,9 @@ const CategoryApi = {
         return axiosClient.get(url);
     },
     add: (params) => {
-
+        axiosClient.defaults.baseURL = baseUrl;
+        const url = '/categories';
+        return axiosClient.post(url, { name: params });
     },
     edit: (params) => {
 

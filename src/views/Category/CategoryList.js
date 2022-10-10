@@ -21,25 +21,27 @@ class CategoryList extends React.Component {
         }
     }
 
-    componentDidMount() {
-        const getCategories = async () => {
-            const response = await categoryService.getAll();
-            if (!response) {
-                console.log('Login error');
-                return;
-            }
-            if (response.status &&
-                response.status.statusCode !== 200) {
-                console.log('Login error:', response.message)
-                return;
-            }
-            this.setState({
-                category: {
-                    list: response.data
-                }
-            });
+    getCategories = async () => {
+        const response = await categoryService.getAll();
+        if (!response) {
+            console.log('getCategories error');
+            return;
         }
-        getCategories();
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('getCategories error:', response.message)
+            return;
+        }
+        this.setState({
+            category: {
+                list: response.data
+            }
+        });
+    }
+
+    componentDidMount() {
+
+        this.getCategories();
     }
 
     openPopupHandler = (e) => {
@@ -70,7 +72,16 @@ class CategoryList extends React.Component {
 
     handleOnClickAdd = (newCategory) => {
         // e.preventDefault();
-        console.log('handleOnClickAdd', newCategory);
+        const addCategory = async (categoryName) => {
+            const response = await categoryService.add(categoryName);
+
+            if (response &&
+                response.data &&
+                response.data.success) {
+                this.getCategories();
+            }
+        }
+        addCategory(newCategory);
         this.setState({
             isShowPopup: false,
         });

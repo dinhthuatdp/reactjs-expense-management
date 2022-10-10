@@ -12,6 +12,19 @@ const CategoryService = {
             }
         }
         return getCategories();
+    },
+    add: (name) => {
+        const add = async (name) => {
+            try {
+                const response = await categoryApi.add(name);
+                return response;
+            } catch (error) {
+                console.log('Add category failed', error);
+                return null;
+            }
+        }
+
+        return add(name);
     }
 }
 
