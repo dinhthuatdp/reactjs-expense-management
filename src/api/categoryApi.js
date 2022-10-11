@@ -18,7 +18,9 @@ const CategoryApi = {
         return axiosClient.put(url, { name: params.name });
     },
     delete: (params) => {
-
+        axiosClient.defaults.baseURL = baseUrl;
+        const url = `/categories/${params}`;
+        return axiosClient.delete(url, { id: params });
     }
 }
 

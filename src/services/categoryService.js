@@ -37,6 +37,18 @@ const CategoryService = {
             }
         }
         return edit(id, name);
+    },
+    delete: (id) => {
+        const del = async (id) => {
+            try {
+                const response = await categoryApi.delete(id);
+                return response;
+            } catch (error) {
+                console.log('Delete category failed', error);
+                return null;
+            }
+        }
+        return del(id);
     }
 }
 

@@ -88,7 +88,21 @@ class CategoryList extends React.Component {
 
     handleDeleteOnClick = (e, id) => {
         e.preventDefault();
-        console.log('handleDeleteOnClick clicked', id);
+        const deleteCategory = async (id) => {
+            const response = await categoryService.delete(id);
+            if (!response) {
+                console.log('Delete error');
+                return;
+            }
+            if (response.status &&
+                response.status.statusCode !== 200) {
+                console.log('Delete error:', response.message)
+                return;
+            }
+            // reload.
+            this.getCategories();
+        }
+        deleteCategory(id);
     }
 
     handleOnClickAddOrEdit = (categoryName) => {
