@@ -25,6 +25,18 @@ const CategoryService = {
         }
 
         return add(name);
+    },
+    edit: (id, name) => {
+        const edit = async (id, name) => {
+            try {
+                const response = await categoryApi.edit({ id, name });
+                return response;
+            } catch (error) {
+                console.log('Edit category failed', error);
+                return null;
+            }
+        }
+        return edit(id, name);
     }
 }
 

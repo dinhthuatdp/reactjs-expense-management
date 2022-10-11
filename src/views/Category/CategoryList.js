@@ -9,14 +9,18 @@ import Popup from '../../components/Popups/Popup';
 import GroupEdit from '../../components/GroupEdit';
 import Card from '../../components/Card/Card';
 
+const addTitle = 'Add New Category';
+const editTitle = 'Edit Category';
+
 class CategoryList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            popupTitle: addTitle,
             isShowPopup: false,
             category: {
                 list: [],
-                newCategory: ''
+                categoryName: ''
             }
         }
     }
@@ -44,12 +48,20 @@ class CategoryList extends React.Component {
         this.getCategories();
     }
 
+    updatePopupTitle = (title) => {
+        this.setState({
+            popupTitle: title
+        });
+    }
+
     openPopupHandler = (e) => {
         this.setState({
+            popupTitle: addTitle,
             isShowPopup: !this.state.isShowPopup,
             category: {
                 ...this.state.category,
-                newCategory: ''
+                categoryName: '',
+                categoryEditId: null
             }
         });
     }
@@ -60,9 +72,18 @@ class CategoryList extends React.Component {
         });
     }
 
-    handleEditOnClick = (e, id) => {
+    handleEditOnClick = (e, id, name) => {
         e.preventDefault();
-        console.log('handleEditOnClick clicked', id);
+        this.setState({
+            popupTitle: editTitle,
+            isShowPopup: !this.state.isShowPopup,
+            category: {
+                ...this.state.category,
+                categoryName: name,
+                categoryEditId: id
+            }
+        });
+
     }
 
     handleDeleteOnClick = (e, id) => {
@@ -70,18 +91,38 @@ class CategoryList extends React.Component {
         console.log('handleDeleteOnClick clicked', id);
     }
 
-    handleOnClickAdd = (newCategory) => {
+    handleOnClickAddOrEdit = (categoryName) => {
         // e.preventDefault();
-        const addCategory = async (categoryName) => {
-            const response = await categoryService.add(categoryName);
-
-            if (response &&
-                response.data &&
-                response.data.success) {
+        const editId = this.state.category.categoryEditId;
+        if (editId) {
+            const editCategory = async (id, name) => {
+                const response = await categoryService.edit(id, name);
+                if (!response) {
+                    console.log('Edit error');
+                    return;
+                }
+                if (response.status &&
+                    response.status.statusCode !== 200) {
+                    console.log('Edit error:', response.message)
+                    return;
+                }
+                // reload.
                 this.getCategories();
             }
+            editCategory(editId, categoryName);
+        } else { // Add new
+            const addCategory = async (categoryName) => {
+                const response = await categoryService.add(categoryName);
+
+                if (response &&
+                    response.data &&
+                    response.data.success) {
+                    // reload.
+                    this.getCategories();
+                }
+            }
+            addCategory(categoryName);
         }
-        addCategory(newCategory);
         this.setState({
             isShowPopup: false,
         });
@@ -95,7 +136,7 @@ class CategoryList extends React.Component {
             elements = this.state.category.list.map(x => {
                 actionElements = <>
                     <button className='btn btn-edit'
-                        onClick={(e) => this.handleEditOnClick(e, x.id)}>{t('label.edit')}</button>
+                        onClick={(e) => this.handleEditOnClick(e, x.id, x.name)}>{t('label.edit')}</button>
                     <button className='btn btn-delete'
                         onClick={(e) => this.handleDeleteOnClick(e, x.id)}>{t('label.delete')}</button>
                 </>
@@ -106,17 +147,17 @@ class CategoryList extends React.Component {
         }
         const formikProps = {
             initialValues: {
-                newCategory: ''
+                categoryName: this.state.category.categoryName ?? ''
             },
             validateOnBlur: true,
             validateOnchange: true,
             validationSchema: Yup.object().shape({
-                newCategory: Yup.string().required()
+                categoryName: Yup.string().required()
             }),
             onSubmit: async (formValues, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 try {
-                    this.handleOnClickAdd(formValues.newCategory);
+                    this.handleOnClickAddOrEdit(formValues.categoryName);
                     resetForm(true);
                 } catch (e) {
                     console.error(e);
@@ -129,7 +170,7 @@ class CategoryList extends React.Component {
                 <div className='page-content'>
                     <div className='page-wrapper'>
                         <Popup isShow={this.state.isShowPopup}
-                            title='Add New Category'>
+                            title={this.state.popupTitle}>
                             <Formik {...formikProps}>
                                 {props => (
                                     <form className='popup-child'
@@ -137,12 +178,12 @@ class CategoryList extends React.Component {
                                         <GroupEdit
                                             onChange={props.handleChange}
                                             text='Name'
-                                            id='newCategory'
-                                            data={props.values.newCategory}
-                                            name='newCategory'
+                                            id='categoryName'
+                                            data={props.values.categoryName}
+                                            name='categoryName'
                                             onBlur={props.handleBlur}
                                             type='text' />
-                                        <ErrorMessage name='newCategory' >
+                                        <ErrorMessage name='categoryName' >
                                             {errMsg => <span className="error-message error-category-new">{errMsg}</span>}
                                         </ErrorMessage>
                                         <div className='popup-actions'>
@@ -150,7 +191,7 @@ class CategoryList extends React.Component {
                                                 type='submit'
                                                 disabled={!props.isValid}
                                                 className={!props.isValid ? 'disable-button btn' : 'btn'}
-                                            >{t('label.add')}</button>
+                                            >{t('label.save')}</button>
                                             <button className='btn btn-cancel'
                                                 type='button'
                                                 onClick={(e) => this.cancelOnClick(e)}>{t('label.cancel')}</button>

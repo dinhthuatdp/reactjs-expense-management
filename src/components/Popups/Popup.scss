@@ -2,9 +2,9 @@ $border-color: #a4a2a4;
 .popup-wrapper {
   z-index: 100;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   left: 50%;
-  top: 50%;
+  top: 20%;
   transform: translate(-50%, 0%);
   min-width: 80%;
   border: 1px solid $border-color;

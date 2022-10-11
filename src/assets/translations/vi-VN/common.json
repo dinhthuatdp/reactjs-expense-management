@@ -27,5 +27,6 @@
   "label.date": "Ngày",
   "label.enterCost": "Nhập tiền",
   "label.enterDescription": "Mô tả",
-  "label.chooseAttachment": "Chọn hình"
+  "label.chooseAttachment": "Chọn hình",
+  "label.save": "Lưu"
 }

@@ -13,7 +13,9 @@ const CategoryApi = {
         return axiosClient.post(url, { name: params });
     },
     edit: (params) => {
-
+        axiosClient.defaults.baseURL = baseUrl;
+        const url = `/categories/${params.id}`;
+        return axiosClient.put(url, { name: params.name });
     },
     delete: (params) => {
 

@@ -27,5 +27,6 @@
   "label.date": "Date",
   "label.enterCost": "Enter cost",
   "label.enterDescription": "Enter Description",
-  "label.chooseAttachment": "Choose Attachment"
+  "label.chooseAttachment": "Choose Attachment",
+  "label.save": "Save"
 }
