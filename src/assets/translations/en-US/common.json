@@ -28,5 +28,8 @@
   "label.enterCost": "Enter cost",
   "label.enterDescription": "Enter Description",
   "label.chooseAttachment": "Choose Attachment",
-  "label.save": "Save"
+  "label.save": "Save",
+  "label.addTitle": "Add New Category",
+  "label.editTitle": "Edit Category",
+  "label.name": "Name"
 }

@@ -9,8 +9,8 @@ import Popup from '../../components/Popups/Popup';
 import GroupEdit from '../../components/GroupEdit';
 import Card from '../../components/Card/Card';
 
-const addTitle = 'Add New Category';
-const editTitle = 'Edit Category';
+let addTitle = 'add';
+let editTitle = 'edit';
 
 class CategoryList extends React.Component {
     constructor(props) {
@@ -46,12 +46,6 @@ class CategoryList extends React.Component {
     componentDidMount() {
 
         this.getCategories();
-    }
-
-    updatePopupTitle = (title) => {
-        this.setState({
-            popupTitle: title
-        });
     }
 
     openPopupHandler = (e) => {
@@ -146,6 +140,9 @@ class CategoryList extends React.Component {
         const { t } = this.props;
         let elements = [];
         let actionElements = <></>;
+        const title = this.state.popupTitle === addTitle
+            ? t('label.addTitle')
+            : t('label.editTitle');
         if (this.state.category.list) {
             elements = this.state.category.list.map(x => {
                 actionElements = <>
@@ -184,14 +181,14 @@ class CategoryList extends React.Component {
                 <div className='page-content'>
                     <div className='page-wrapper'>
                         <Popup isShow={this.state.isShowPopup}
-                            title={this.state.popupTitle}>
+                            title={title}>
                             <Formik {...formikProps}>
                                 {props => (
                                     <form className='popup-child'
                                         onSubmit={props.handleSubmit}>
                                         <GroupEdit
                                             onChange={props.handleChange}
-                                            text='Name'
+                                            text={t('label.name')}
                                             id='categoryName'
                                             data={props.values.categoryName}
                                             name='categoryName'
