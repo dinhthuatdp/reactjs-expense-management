@@ -9,41 +9,42 @@ import './ExpenseCreate.scss';
 import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import categoryService from '../../services/categoryService';
+import expenseTypeService from '../../services/expenseTypeService';
 
 class ExpenseCreate extends React.Component {
 
     constructor(props) {
         super(props);
-        const dropdownData = [
-            {
-                value: 'incoming',
-                displayValue: 'Incoming'
-            },
-            {
-                value: 'spending',
-                displayValue: 'Spending'
-            }
-        ];
+        // const dropdownData = [
+        //     {
+        //         value: 'incoming',
+        //         displayValue: 'Incoming'
+        //     },
+        //     {
+        //         value: 'spending',
+        //         displayValue: 'Spending'
+        //     }
+        // ];
         this.state = {
-            type: dropdownData[1].value,
+            type: '',
             date: '',
             cost: '',
             description: '',
             category: '',
             attachment: '',
-            dropdownData: dropdownData,
+            dropdownData: [],
             categories: []
         }
     }
     getCategories = async () => {
         const response = await categoryService.getAll();
         if (!response) {
-            console.log('Login error');
+            console.log('Get All category error');
             return;
         }
         if (response.status &&
             response.status.statusCode !== 200) {
-            console.log('Login error:', response.message)
+            console.log('Get All category error:', response.message)
             return;
         }
         if (response.data) {
@@ -60,8 +61,37 @@ class ExpenseCreate extends React.Component {
             });
         }
     }
+    getAllExpenseTypes = async () => {
+        const response = await expenseTypeService.getAll();
+
+        if (!response) {
+            console.log('Get All expense type error');
+            return;
+        }
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Get all expense type error:', response.message)
+            return;
+        }
+        if (response.data &&
+            response.data.expenseTypes &&
+            response.data.expenseTypes.length > 0) {
+            let data = [];
+            response.data.expenseTypes.forEach(x => {
+                data.push({
+                    value: x.id,
+                    displayValue: x.name
+                })
+            });
+            this.setState({
+                dropdownData: data,
+                type: data[0].value
+            });
+        }
+    }
     async componentDidMount() {
         await this.getCategories();
+        await this.getAllExpenseTypes();
     }
 
     handleAddClick = (type, date, cost, description, category, attachment) => {
