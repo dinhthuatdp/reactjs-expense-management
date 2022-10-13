@@ -8,6 +8,7 @@ import './CategoryList.scss';
 import Popup from '../../components/Popups/Popup';
 import GroupEdit from '../../components/GroupEdit';
 import Card from '../../components/Card/Card';
+import Loading from '../../components/Loading/Loading';
 
 let addTitle = 'add';
 let editTitle = 'edit';
@@ -16,6 +17,7 @@ class CategoryList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             popupTitle: addTitle,
             isShowPopup: false,
             category: {
@@ -29,14 +31,21 @@ class CategoryList extends React.Component {
         const response = await categoryService.getAll();
         if (!response) {
             console.log('getCategories error');
+            this.setState({
+                isLoading: false
+            });
             return;
         }
         if (response.status &&
             response.status.statusCode !== 200) {
+            this.setState({
+                isLoading: false
+            });
             console.log('getCategories error:', response.message)
             return;
         }
         this.setState({
+            isLoading: false,
             category: {
                 list: response.data
             }
@@ -216,9 +225,14 @@ class CategoryList extends React.Component {
                             <button className='btn'
                                 onClick={(e) => this.openPopupHandler(e)}>{t('label.add')}</button>
                         </div>
-                        <div className='list'>
-                            {elements}
-                        </div>
+                        {
+                            this.state.isLoading ? (
+                                <Loading />
+                            ) : (
+                                    <div className='list'>
+                                        {elements}
+                                    </div>)
+                        }
                     </div>
                 </div>
             </>
