@@ -15,16 +15,6 @@ class ExpenseCreate extends React.Component {
 
     constructor(props) {
         super(props);
-        // const dropdownData = [
-        //     {
-        //         value: 'incoming',
-        //         displayValue: 'Incoming'
-        //     },
-        //     {
-        //         value: 'spending',
-        //         displayValue: 'Spending'
-        //     }
-        // ];
         this.state = {
             type: '',
             date: '',
