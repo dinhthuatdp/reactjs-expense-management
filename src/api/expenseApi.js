@@ -6,7 +6,20 @@ const url = '/expenses';
 const ExpenseApi = {
     add: (expense) => {
         axiosClient.defaults.baseURL = baseUrl;
-        return axiosClient.post(url, expense);
+        const formData = new FormData();
+        Object.entries(expense).forEach(([key, value]) => {
+            if (key === 'attachments') {
+                for (var index = 0; index < value.length; index++) {
+                    formData.append(key, value[index]);
+                }
+            } else {
+                formData.append(key, value);
+            }
+        });
+        const headers = {
+            "Content-Type": "multipart/form-data"
+        };
+        return axiosClient.post(url, formData, headers);
     }
 }
 

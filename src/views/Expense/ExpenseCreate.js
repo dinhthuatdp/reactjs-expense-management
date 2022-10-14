@@ -10,18 +10,19 @@ import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import categoryService from '../../services/categoryService';
 import expenseTypeService from '../../services/expenseTypeService';
+import expenseService from '../../services/expenseService';
 
 class ExpenseCreate extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            type: '',
+            typeID: '',
+            cost: 0,
+            categoryID: '',
             date: '',
-            cost: '',
             description: '',
-            category: '',
-            attachment: '',
+            attachments: [],
             dropdownData: [],
             categories: []
         }
@@ -47,7 +48,7 @@ class ExpenseCreate extends React.Component {
             });
             this.setState({
                 categories: data,
-                category: data[0].value
+                categoryID: data[0].value
             });
         }
     }
@@ -75,7 +76,7 @@ class ExpenseCreate extends React.Component {
             });
             this.setState({
                 dropdownData: data,
-                type: data[0].value
+                typeID: data[0].value
             });
         }
     }
@@ -84,46 +85,64 @@ class ExpenseCreate extends React.Component {
         await this.getAllExpenseTypes();
     }
 
-    handleAddClick = (type, date, cost, description, category, attachment) => {
+    handleAddClick = (typeID, date, cost, description, categoryID, attachments) => {
         let expenseDate = (isNaN(date) && !date) ? moment().utc().format('yyyy-MM-DD') : date;
         let newExpense = {
-            type: type,
+            typeID: typeID,
             date: expenseDate,
             cost: cost,
             description: description,
-            category: category,
-            attachment: "https://cdn.pixabay.com/photo/2022/09/01/20/41/tomatoes-7426160_1280.jpg"
+            categoryID: categoryID,
+            attachments: attachments
         }
-        const action = expenseActionCreators.addExpense(newExpense);
-        this.props.expenses(action);
+        const addExpense = async (expense) => {
+            var response = await expenseService.add(expense);
+
+            if (!response) {
+                console.log('Add expense error');
+                return;
+            }
+            if (response.status &&
+                response.status.statusCode !== 200) {
+                console.log('Add expense error:', response.message)
+                return;
+            }
+            console.log('Add expense success');
+        }
+        addExpense(newExpense);
+        // const action = expenseActionCreators.addExpense(newExpense);
+        // this.props.expenses(action);
         this.props.handleCancelClick();
         this.props.loadData();
     }
 
     render() {
-        const { category, categories, type } = this.state;
+        const { categoryID, categories, typeID } = this.state;
         const { t } = this.props;
         const formikProps = {
             initialValues: {
-                type: type,
+                typeID: typeID,
                 date: moment().utc().format('yyyy-MM-DD'),
-                cost: '',
+                cost: 0,
                 description: '',
-                category: category,
-                attachment: ''
+                categoryID: categoryID,
+                attachments: []
             },
             validateOnBlur: true,
             validateOnchange: true,
             validationSchema: Yup.object().shape({
                 cost: Yup.number().integer()
                     .nullable(false)
-                    .positive()
+                    .positive(),
+                date: Yup.date()
+                    .nullable(false)
+                    .required()
             }),
             onSubmit: async (formValues, { setSubmitting, resetForm }) => {
                 setSubmitting(true);
                 try {
-                    this.handleAddClick(formValues.type, formValues.date, formValues.cost, formValues.description,
-                        formValues.category, formValues.attachment);
+                    this.handleAddClick(formValues.typeID, formValues.date, formValues.cost, formValues.description,
+                        formValues.categoryID, formValues.attachments);
                     resetForm(true);
                 } catch (e) {
                     console.error(e);
@@ -143,8 +162,8 @@ class ExpenseCreate extends React.Component {
                             <div className='input'>
                                 <div className='type-input'>{t('label.type')}</div>
                                 <Dropdown list={this.state.dropdownData}
-                                    name='type'
-                                    value={this.state.type}
+                                    name='typeID'
+                                    value={this.state.typeID}
                                     onChange={props.handleChange}
                                 />
                             </div>
@@ -155,6 +174,9 @@ class ExpenseCreate extends React.Component {
                                     onBlur={props.handleBlur}
                                     name='date'
                                     value={props.values.date} />
+                                <ErrorMessage name='date' >
+                                    {errMsg => <span className="error-message">{errMsg}</span>}
+                                </ErrorMessage>
                             </div>
                             <div className='cost-input input'>
                                 <input type='text'
@@ -176,17 +198,20 @@ class ExpenseCreate extends React.Component {
                             </div>
                             <div className='category-input input'>
                                 <Dropdown list={categories}
-                                    name='category'
-                                    value={props.values.category}
+                                    name='categoryID'
+                                    value={props.values.categoryID}
                                     onChange={props.handleChange}
                                 />
                             </div>
                             <div className='attachment-input input'>
                                 <input type='file' placeholder={t('label.chooseAttachment')}
-                                    onChange={props.handleChange}
+                                    multiple
+                                    onChange={(e) => {
+                                        props.setFieldValue('attachments', e.target.files);
+                                    }}
                                     onBlur={props.handleBlur}
-                                    name='attachment'
-                                    value={props.values.attachment}
+                                    name='attachments'
+                                    defaultValue={props.values.attachments}
                                 />
                             </div>
                             <div className='btns'>

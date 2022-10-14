@@ -8,12 +8,12 @@ class ExpenseCard extends React.Component {
     render() {
         const {
             id,
-            type,
+            typeID,
             date,
             cost,
             description,
-            category,
-            attachment
+            categoryID,
+            attachments
         } = this.props.data;
         const { t } = this.props;
 
@@ -23,7 +23,7 @@ class ExpenseCard extends React.Component {
                     {/* <div className='key'>{this.props.key}</div> */}
                     <div className='card-group'>
                         <div className='type'>
-                            {type}
+                            {typeID}
                         </div>
                         <div className='date'>
                             {date}
@@ -33,7 +33,7 @@ class ExpenseCard extends React.Component {
                         {cost} $
                     </div>
                     <div className='category card-col'>
-                        {category}
+                        {categoryID}
                     </div>
                     <div className='desc card-col'>
                         {
