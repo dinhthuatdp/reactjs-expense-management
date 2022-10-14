@@ -12,6 +12,18 @@ const ExpenseService = {
             }
         }
         return addExpense(expense);
+    },
+    getAll: (params) => {
+        const getAllExpenses = async (params) => {
+            try {
+                const response = await expenseApi.getAll(params);
+                return response;
+            } catch (error) {
+                console.log('Get All Expense failed', error);
+                return null;
+            }
+        }
+        return getAllExpenses(params);
     }
 }
 

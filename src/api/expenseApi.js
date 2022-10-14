@@ -20,6 +20,10 @@ const ExpenseApi = {
             "Content-Type": "multipart/form-data"
         };
         return axiosClient.post(url, formData, headers);
+    },
+    getAll: (params) => {
+        axiosClient.defaults.baseURL = baseUrl;
+        return axiosClient.get(url, { params });
     }
 }
 

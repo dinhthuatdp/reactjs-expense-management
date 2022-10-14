@@ -11,6 +11,8 @@ import ExpenseCreate from '../Expense/ExpenseCreate';
 import store from '../../Store/Store';
 import ExpenseCard from '../../components/Card/ExpenseCard';
 import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
+import expenseService from '../../services/expenseService';
+import Loading from '../../components/Loading/Loading';
 
 class ExpenseList extends React.Component {
 
@@ -19,7 +21,8 @@ class ExpenseList extends React.Component {
         this.state = {
             searchValue: '',
             dataList: [],
-            isShow: false
+            isShow: false,
+            isLoading: true
         }
     }
 
@@ -68,7 +71,26 @@ class ExpenseList extends React.Component {
     }
 
     loadData = () => {
-        this.setState({ dataList: store.getState().expenses.expenses });
+        // this.setState({ dataList: store.getState().expenses.expenses });
+        const getAllExpense = async (params) => {
+            const response = await expenseService.getAll(params);
+            this.setState({
+                isLoading: false
+            });
+            if (!response) {
+                console.log('Get all expense error');
+                return;
+            }
+            if (response.status &&
+                response.status.statusCode !== 200) {
+                console.log('Get all expense error:', response.message)
+                return;
+            }
+            this.setState({
+                dataList: response.data.expenses
+            })
+        }
+        getAllExpense(undefined);
     }
 
     editOnClick = (id) => {
@@ -136,7 +158,8 @@ class ExpenseList extends React.Component {
                     </div>
                     <div className='data'>
                         {
-                            elements
+                            this.state.isLoading ? (<Loading />)
+                                : elements
                         }
                     </div>
                 </div>
