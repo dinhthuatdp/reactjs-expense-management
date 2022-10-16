@@ -1,17 +1,17 @@
 import categoryApi from '../api/categoryApi';
 
 const CategoryService = {
-    getAll: () => {
-        const getCategories = async () => {
+    getAll: (params) => {
+        const getCategories = async (params) => {
             try {
-                const categories = await categoryApi.getAll();
+                const categories = await categoryApi.getAll(params);
                 return categories;
             } catch (error) {
                 console.log('Get categories failed', error);
                 return null;
             }
         }
-        return getCategories();
+        return getCategories(params);
     },
     add: (name) => {
         const add = async (name) => {

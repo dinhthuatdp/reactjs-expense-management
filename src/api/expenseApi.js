@@ -16,10 +16,7 @@ const ExpenseApi = {
                 formData.append(key, value);
             }
         });
-        const headers = {
-            "Content-Type": "multipart/form-data"
-        };
-        return axiosClient.post(url, formData, headers);
+        return axiosClient.post(url, formData);
     },
     getAll: (params) => {
         axiosClient.defaults.baseURL = baseUrl;

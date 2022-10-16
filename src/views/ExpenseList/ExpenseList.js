@@ -13,6 +13,7 @@ import ExpenseCard from '../../components/Card/ExpenseCard';
 import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import expenseService from '../../services/expenseService';
 import Loading from '../../components/Loading/Loading';
+import Paging from '../../components/Paging/Paging';
 
 class ExpenseList extends React.Component {
 
@@ -22,7 +23,11 @@ class ExpenseList extends React.Component {
             searchValue: '',
             dataList: [],
             isShow: false,
-            isLoading: true
+            isLoading: true,
+            pagination: {
+                pageNumber: 1,
+                pageSize: 10
+            }
         }
     }
 
@@ -70,27 +75,36 @@ class ExpenseList extends React.Component {
         this.props.navigate(`/expense/${params.id}`);
     }
 
-    loadData = () => {
-        // this.setState({ dataList: store.getState().expenses.expenses });
-        const getAllExpense = async (params) => {
-            const response = await expenseService.getAll(params);
-            this.setState({
-                isLoading: false
-            });
-            if (!response) {
-                console.log('Get all expense error');
-                return;
-            }
-            if (response.status &&
-                response.status.statusCode !== 200) {
-                console.log('Get all expense error:', response.message)
-                return;
-            }
-            this.setState({
-                dataList: response.data.expenses
-            })
+    getAllExpense = async (params) => {
+        const response = await expenseService.getAll(params);
+        this.setState({
+            isLoading: false
+        });
+        if (!response) {
+            console.log('Get all expense error');
+            return;
         }
-        getAllExpense(undefined);
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Get all expense error:', response.message)
+            return;
+        }
+        this.setState({
+            dataList: response.data.expenses,
+            pagination: {
+                currentPage: this.state.pagination.currentPage,
+                ...response.pagination
+            }
+        })
+    }
+
+    loadData = (pageNum) => {
+        // this.setState({ dataList: store.getState().expenses.expenses });
+        const params = {
+            ...this.state.pagination,
+            pageNumber: pageNum
+        };
+        this.getAllExpense(params);
     }
 
     editOnClick = (id) => {
@@ -159,7 +173,13 @@ class ExpenseList extends React.Component {
                     <div className='data'>
                         {
                             this.state.isLoading ? (<Loading />)
-                                : elements
+                                : (<Paging
+                                    loadData={this.loadData}
+                                    totalPages={this.state.pagination.totalPages}
+                                    pageSize={this.state.pagination.pageSize}
+                                    pageNumber={this.state.pagination.pageNumber} >
+                                    {elements}
+                                </Paging>)
                         }
                     </div>
                 </div>

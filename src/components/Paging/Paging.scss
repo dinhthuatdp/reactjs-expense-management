@@ -1,0 +1,28 @@
+@import "../../Styles/Common.scss";
+
+.paging {
+  $text-color: #333333;
+  $active-color: #1976d2;
+
+  width: 100%;
+  .paging-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    li {
+      color: $text-color;
+      border: 1px solid gray;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    .page-active {
+      background-color: $active-color;
+      color: #fff;
+    }
+  }
+  .paging-top,
+  .paging-bottom {
+    margin: 1rem;
+  }
+}

@@ -9,6 +9,7 @@ import Popup from '../../components/Popups/Popup';
 import GroupEdit from '../../components/GroupEdit';
 import Card from '../../components/Card/Card';
 import Loading from '../../components/Loading/Loading';
+import Paging from '../../components/Paging/Paging';
 
 let addTitle = 'add';
 let editTitle = 'edit';
@@ -17,6 +18,10 @@ class CategoryList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            pagination: {
+                pageNumber: 1,
+                pageSize: 10
+            },
             isLoading: true,
             popupTitle: addTitle,
             isShowPopup: false,
@@ -27,8 +32,8 @@ class CategoryList extends React.Component {
         }
     }
 
-    getCategories = async () => {
-        const response = await categoryService.getAll();
+    getCategories = async (params) => {
+        const response = await categoryService.getAll(params);
         if (!response) {
             console.log('getCategories error');
             this.setState({
@@ -45,6 +50,10 @@ class CategoryList extends React.Component {
             return;
         }
         this.setState({
+            pagination: {
+                currentPage: this.state.pagination.currentPage,
+                ...response.pagination
+            },
             isLoading: false,
             category: {
                 list: response.data
@@ -52,9 +61,16 @@ class CategoryList extends React.Component {
         });
     }
 
-    componentDidMount() {
+    loadData = (pageNum) => {
+        const params = {
+            ...this.state.pagination,
+            pageNumber: pageNum
+        };
+        this.getCategories(params);
+    }
 
-        this.getCategories();
+    componentDidMount() {
+        this.loadData(this.state.pagination.pageNumber);
     }
 
     openPopupHandler = (e) => {
@@ -230,7 +246,13 @@ class CategoryList extends React.Component {
                                 <Loading />
                             ) : (
                                     <div className='list'>
-                                        {elements}
+                                        <Paging
+                                            loadData={this.loadData}
+                                            totalPages={this.state.pagination.totalPages}
+                                            pageSize={this.state.pagination.pageSize}
+                                            pageNumber={this.state.pagination.pageNumber} >
+                                            {elements}
+                                        </Paging>
                                     </div>)
                         }
                     </div>

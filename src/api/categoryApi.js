@@ -4,9 +4,9 @@ const baseUrl = process.env.REACT_APP_API_URL_EXPENSE;
 const url = '/categories';
 
 const CategoryApi = {
-    getAll: () => {
+    getAll: (params) => {
         axiosClient.defaults.baseURL = baseUrl;
-        return axiosClient.get(url);
+        return axiosClient.get(url, { params });
     },
     add: (params) => {
         axiosClient.defaults.baseURL = baseUrl;
