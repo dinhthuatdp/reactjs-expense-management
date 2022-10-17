@@ -85,7 +85,7 @@ class ExpenseCreate extends React.Component {
         await this.getAllExpenseTypes();
     }
 
-    handleAddClick = (typeID, date, cost, description, categoryID, attachments) => {
+    handleAddClick = async (typeID, date, cost, description, categoryID, attachments) => {
         let expenseDate = (isNaN(date) && !date) ? moment().utc().format('yyyy-MM-DD') : date;
         let newExpense = {
             typeID: typeID,
@@ -109,7 +109,7 @@ class ExpenseCreate extends React.Component {
             }
             console.log('Add expense success');
         }
-        addExpense(newExpense);
+        await addExpense(newExpense);
         // const action = expenseActionCreators.addExpense(newExpense);
         // this.props.expenses(action);
         this.props.handleCancelClick();

@@ -89,6 +89,7 @@ class ExpenseList extends React.Component {
             console.log('Get all expense error:', response.message)
             return;
         }
+        console.log('check response', response)
         this.setState({
             dataList: response.data.expenses,
             pagination: {
@@ -100,16 +101,28 @@ class ExpenseList extends React.Component {
 
     loadData = (pageNum, pageSize) => {
         // this.setState({ dataList: store.getState().expenses.expenses });
-        this.setState({
-            pageNumber: pageNum,
-            pageSize: pageSize
-        });
-        const params = {
-            pageSize: pageSize,
-            pageNumber: pageNum
-        };
-        console.log('check params', params)
-        this.getAllExpense(params);
+        if (pageNum && pageSize) {
+            console.log('check loadData', pageNum, pageSize)
+            this.setState({
+                pagination: {
+                    pageNumber: pageNum,
+                    pageSize: pageSize
+                }
+            }, () => {
+                const params = {
+                    pageSize: this.state.pagination.pageSize,
+                    pageNumber: this.state.pagination.pageNumber
+                };
+                this.getAllExpense(params);
+            });
+        } else {
+            console.log('check load Data else', this.state.pagination);
+            const params = {
+                pageSize: this.state.pagination.pageSize,
+                pageNumber: this.state.pagination.pageNumber
+            };
+            this.getAllExpense(params);
+        }
     }
 
     editOnClick = (id) => {
