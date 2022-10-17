@@ -15,6 +15,7 @@ class Paging extends React.Component {
     componentDidUpdate(prevProps) {
         console.log('check did update', prevProps, this.props)
         if (prevProps.pageSize !== this.props.pageSize) {
+            this.props.loadData(this.props.pageNumber, this.props.pageSize);
             this.setState({
                 pageSize: this.props.pageSize,
                 pageNumber: this.props.pageNumber,
