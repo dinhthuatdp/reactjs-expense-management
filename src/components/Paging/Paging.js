@@ -13,49 +13,56 @@ class Paging extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log('check did update', prevProps, this.props)
         if (prevProps.pageSize !== this.props.pageSize) {
             this.setState({
                 pageSize: this.props.pageSize,
                 pageNumber: this.props.pageNumber,
                 totalPages: this.props.totalPages
-            })
+            });
+        }
+        else if (prevProps.totalPages !== this.props.totalPages) {
+            console.log('chekc update total ', this.state)
+            // this.setState({
+            //     totalPages: this.props.totalPages
+            // });
         }
     }
 
-    handleOnClick = (e, pageNumber) => {
+    handleOnClick = async (e, pageNumber) => {
         if (this.state.pageNumber !== pageNumber) {
-            this.props.loadData(pageNumber, this.state.pageSize);
+            await this.props.loadData(pageNumber, this.state.pageSize);
             this.setState({
                 pageNumber: pageNumber
             });
         }
     }
 
-    handleFirstOnClick = (e) => {
-        this.props.loadData(1, this.state.pageSize);
+    handleFirstOnClick = async (e) => {
+        await this.props.loadData(1, this.state.pageSize);
         this.setState({
             pageNumber: 1
         });
     }
 
-    handleLastOnClick = (e) => {
-        this.props.loadData(this.state.totalPages, this.state.pageSize);
+    handleLastOnClick = async (e) => {
+        await this.props.loadData(this.state.totalPages, this.state.pageSize);
         this.setState({
             pageNumber: this.state.totalPages
         });
     }
 
-    handleNextOrPrevOnClick = (e, number) => {
+    handleNextOrPrevOnClick = async (e, number) => {
         if (number === 1) {
             if (this.state.pageNumber < this.state.totalPages) {
-                this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
+                await this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
                 this.setState({
                     pageNumber: this.state.pageNumber + number
                 });
             }
         } else if (number === -1) {
             if (this.state.pageNumber > 1) {
-                this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
+                await this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
                 this.setState({
                     pageNumber: this.state.pageNumber + number
                 });
@@ -65,13 +72,13 @@ class Paging extends React.Component {
 
     handleOnChangePageSize = (e) => {
         this.setState({
+            // pageSize: parseInt(e.target.value)
             pageSize: e.target.value
         });
     }
-    handleKeyPressPageSize = (e) => {
+    handleKeyPressPageSize = async (e) => {
         if (e.key === "Enter") {
-            console.log('check enter:', e.target.value)
-            this.props.loadData(this.state.pageNumber, this.state.pageSize);
+            await this.props.loadData(this.state.pageNumber, this.state.pageSize);
         }
     }
 
@@ -93,12 +100,17 @@ class Paging extends React.Component {
         if (totalPages > 6) {
             for (let i = 1; i <= 3; i++) {
                 if (i === pageNumber) {
-                    classActive = 'page-active';
+                    pageLeft.push(<li onClick={(e) => this.handleOnClick(e, i)} className='page-active' key={i}>{i}</li>);
                 } else {
-                    classActive = '';
+                    pageLeft.push(<li onClick={(e) => this.handleOnClick(e, i)} className='' key={i}>{i}</li>);
                 }
-                pageLeft.push(<li onClick={(e) => this.handleOnClick(e, i)} className={classActive} key={i}>{i}</li>);
-                pageRight.push(<li onClick={(e) => this.handleOnClick(e, i)} className={classActive} key={totalPages - (i - 1)}>{totalPages - (i - 1)}</li>);
+                if (totalPages - (i - 1) === pageNumber) {
+                    pageRight.push(<li onClick={(e) => this.handleOnClick(e, totalPages - (i - 1))}
+                        className='page-active' key={totalPages - (i - 1)}>{totalPages - (i - 1)}</li>);
+                } else {
+                    pageRight.push(<li onClick={(e) => this.handleOnClick(e, totalPages - (i - 1))}
+                        className='' key={totalPages - (i - 1)}>{totalPages - (i - 1)}</li>);
+                }
             }
             pageElements = [...pageLeft, '...', ...pageRight.reverse()];
         }

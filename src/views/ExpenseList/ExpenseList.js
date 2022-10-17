@@ -26,31 +26,22 @@ class ExpenseList extends React.Component {
             isLoading: true,
             pagination: {
                 pageNumber: 1,
-                pageSize: 10
+                pageSize: 10,
+                totalPages: 0
             }
         }
     }
 
-    componentDidMount() {
-        this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
+    async componentDidMount() {
+        await this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
     }
 
-    handleSearch = (e) => {
-        if (!this.state.dataList) {
-            return;
-        }
-        if (this.state.searchValue) {
-            const searchResult = this.state.dataList.filter(item => item.category.toLocaleLowerCase()
-                .includes(this.state.searchValue.toLocaleLowerCase()))
-
-            this.setState({
-                dataList: searchResult
-            })
-        } else {
-            this.setState({
-                dataList: store.getState().expenses.expenses
-            })
-        }
+    handleSearch = async (e) => {
+        this.setState({
+            searchValue: e.target.value
+        });
+        await this.loadData(this.state.pagination.pageNumber,
+            this.state.pagination.pageSize);
     }
 
     handleSearchChange = (e) => {
@@ -77,6 +68,7 @@ class ExpenseList extends React.Component {
 
     getAllExpense = async (params) => {
         const response = await expenseService.getAll(params);
+
         this.setState({
             isLoading: false
         });
@@ -86,42 +78,42 @@ class ExpenseList extends React.Component {
         }
         if (response.status &&
             response.status.statusCode !== 200) {
-            console.log('Get all expense error:', response.message)
+            console.log('Get all expense error:', response.message);
             return;
         }
-        console.log('check response', response)
         this.setState({
             dataList: response.data.expenses,
             pagination: {
                 currentPage: this.state.pagination.currentPage,
                 ...response.pagination
             }
-        })
+        });
     }
 
-    loadData = (pageNum, pageSize) => {
+    loadData = async (pageNum, pageSize) => {
         // this.setState({ dataList: store.getState().expenses.expenses });
+        const searchVal = `description:${this.state.searchValue};^$type:${this.state.searchValue};^$category:${this.state.searchValue}`;
         if (pageNum && pageSize) {
-            console.log('check loadData', pageNum, pageSize)
             this.setState({
                 pagination: {
                     pageNumber: pageNum,
-                    pageSize: pageSize
+                    pageSize: pageSize,
                 }
-            }, () => {
+            }, async () => {
                 const params = {
                     pageSize: this.state.pagination.pageSize,
-                    pageNumber: this.state.pagination.pageNumber
+                    pageNumber: this.state.pagination.pageNumber,
+                    search: searchVal
                 };
-                this.getAllExpense(params);
+                await this.getAllExpense(params);
             });
         } else {
-            console.log('check load Data else', this.state.pagination);
             const params = {
                 pageSize: this.state.pagination.pageSize,
-                pageNumber: this.state.pagination.pageNumber
+                pageNumber: this.state.pagination.pageNumber,
+                search: searchVal
             };
-            this.getAllExpense(params);
+            await this.getAllExpense(params);
         }
     }
 
@@ -141,10 +133,10 @@ class ExpenseList extends React.Component {
         });
     }
 
-    deleteOnClick = (id) => {
+    deleteOnClick = async (id) => {
         const action = expenseActionCreators.deleteExpense(id);
         this.props.expenses(action);
-        this.loadData();
+        await this.loadData();
     }
 
     render() {
