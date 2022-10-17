@@ -32,7 +32,7 @@ class ExpenseList extends React.Component {
     }
 
     componentDidMount() {
-        this.loadData();
+        this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
     }
 
     handleSearch = (e) => {
@@ -98,12 +98,17 @@ class ExpenseList extends React.Component {
         })
     }
 
-    loadData = (pageNum) => {
+    loadData = (pageNum, pageSize) => {
         // this.setState({ dataList: store.getState().expenses.expenses });
+        this.setState({
+            pageNumber: pageNum,
+            pageSize: pageSize
+        });
         const params = {
-            ...this.state.pagination,
+            pageSize: pageSize,
             pageNumber: pageNum
         };
+        console.log('check params', params)
         this.getAllExpense(params);
     }
 

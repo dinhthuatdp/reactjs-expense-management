@@ -5,39 +5,82 @@ import './Paging.scss';
 class Paging extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pageSize: this.props.pageSize,
+            totalPages: this.props.totalPages,
+            pageNumber: this.props.pageNumber
+        };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.pageSize !== this.props.pageSize) {
+            this.setState({
+                pageSize: this.props.pageSize,
+                pageNumber: this.props.pageNumber,
+                totalPages: this.props.totalPages
+            })
+        }
     }
 
     handleOnClick = (e, pageNumber) => {
-        if (this.props.pageNumber !== pageNumber) {
-            this.props.loadData(pageNumber);
+        if (this.state.pageNumber !== pageNumber) {
+            this.props.loadData(pageNumber, this.state.pageSize);
+            this.setState({
+                pageNumber: pageNumber
+            });
         }
     }
 
     handleFirstOnClick = (e) => {
-        this.props.loadData(1);
+        this.props.loadData(1, this.state.pageSize);
+        this.setState({
+            pageNumber: 1
+        });
     }
 
     handleLastOnClick = (e) => {
-        this.props.loadData(this.props.totalPages);
+        this.props.loadData(this.state.totalPages, this.state.pageSize);
+        this.setState({
+            pageNumber: this.state.totalPages
+        });
     }
 
     handleNextOrPrevOnClick = (e, number) => {
         if (number === 1) {
-            if (this.props.pageNumber < this.props.totalPages) {
-                this.props.loadData(this.props.pageNumber + number);
+            if (this.state.pageNumber < this.state.totalPages) {
+                this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
+                this.setState({
+                    pageNumber: this.state.pageNumber + number
+                });
             }
         } else if (number === -1) {
-            if (this.props.pageNumber > 1) {
-                this.props.loadData(this.props.pageNumber + number);
+            if (this.state.pageNumber > 1) {
+                this.props.loadData(this.state.pageNumber + number, this.state.pageSize);
+                this.setState({
+                    pageNumber: this.state.pageNumber + number
+                });
             }
+        }
+    }
+
+    handleOnChangePageSize = (e) => {
+        this.setState({
+            pageSize: e.target.value
+        });
+    }
+    handleKeyPressPageSize = (e) => {
+        if (e.key === "Enter") {
+            console.log('check enter:', e.target.value)
+            this.props.loadData(this.state.pageNumber, this.state.pageSize);
         }
     }
 
     render() {
         const {
             totalPages,
-            pageNumber
-        } = this.props;
+            pageNumber,
+        } = this.state;
+
         let hasPaging = true;
         if (!totalPages ||
             totalPages == 0) {
@@ -83,6 +126,11 @@ class Paging extends React.Component {
                                         <li onClick={(e) => this.handleNextOrPrevOnClick(e, 1)}><i className="fa-solid fa-angle-right"></i></li>
                                         <li onClick={(e) => this.handleLastOnClick(e)}><i className="fa-solid fa-angles-right"></i></li>
                                     </ul>
+                                    <div className='page-size'>
+                                        <input value={this.state.pageSize}
+                                            onChange={(e) => this.handleOnChangePageSize(e)}
+                                            onKeyPress={(e) => this.handleKeyPressPageSize(e)} />
+                                    </div>
                                 </div>
                                 {
                                     this.props.children
@@ -95,6 +143,11 @@ class Paging extends React.Component {
                                         <li onClick={(e) => this.handleNextOrPrevOnClick(e, 1)}><i className="fa-solid fa-angle-right"></i></li>
                                         <li onClick={(e) => this.handleLastOnClick(e)}><i className="fa-solid fa-angles-right"></i></li>
                                     </ul>
+                                    <div className='page-size'>
+                                        <input value={this.state.pageSize}
+                                            onChange={(e) => this.handleOnChangePageSize(e)}
+                                            onKeyPress={(e) => this.handleKeyPressPageSize(e)} />
+                                    </div>
                                 </div>
                             </div>
                         ) : (

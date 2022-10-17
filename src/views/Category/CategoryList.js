@@ -61,16 +61,20 @@ class CategoryList extends React.Component {
         });
     }
 
-    loadData = (pageNum) => {
+    loadData = (pageNum, pageSize) => {
+        this.setState({
+            pageNumber: pageNum,
+            pageSize: pageSize
+        });
         const params = {
-            ...this.state.pagination,
+            pageSize: pageSize,
             pageNumber: pageNum
         };
         this.getCategories(params);
     }
 
     componentDidMount() {
-        this.loadData(this.state.pagination.pageNumber);
+        this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
     }
 
     openPopupHandler = (e) => {
