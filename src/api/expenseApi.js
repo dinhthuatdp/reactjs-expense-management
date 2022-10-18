@@ -39,6 +39,10 @@ const ExpenseApi = {
             }
         });
         return axiosClient.put(`${url}/${expense.id}`, formData);
+    },
+    delete: (id) => {
+        axiosClient.defaults.baseURL = baseUrl;
+        return axiosClient.delete(`${url}/${id}`);
     }
 }
 

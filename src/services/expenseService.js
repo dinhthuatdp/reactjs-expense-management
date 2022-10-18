@@ -50,6 +50,18 @@ const ExpenseService = {
         }
         return editExpense(expense);
     },
+    delete: (id) => {
+        const deleteExpense = async (id) => {
+            try {
+                const response = await expenseApi.delete(id);
+                return response;
+            } catch (error) {
+                console.log('Delete Expense failed', error);
+                return null;
+            }
+        }
+        return deleteExpense(id);
+    }
 }
 
 export default ExpenseService;

@@ -133,10 +133,29 @@ class ExpenseList extends React.Component {
         });
     }
 
+    deleteExpense = async (id) => {
+        const response = await expenseService.delete(id);
+
+        this.setState({
+            isLoading: false
+        });
+        if (!response) {
+            console.log('Delete expense error');
+            return;
+        }
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Delete expense error:', response.message);
+            return;
+        }
+    }
+
     deleteOnClick = async (id) => {
-        const action = expenseActionCreators.deleteExpense(id);
-        this.props.expenses(action);
-        await this.loadData();
+        // const action = expenseActionCreators.deleteExpense(id);
+        // this.props.expenses(action);
+        console.log('check delete ', id)
+        await this.deleteExpense(id);
+        await this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
     }
 
     render() {
