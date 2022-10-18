@@ -21,6 +21,10 @@ const ExpenseApi = {
     getAll: (params) => {
         axiosClient.defaults.baseURL = baseUrl;
         return axiosClient.get(url, { params });
+    },
+    get: (id) => {
+        axiosClient.defaults.baseURL = baseUrl;
+        return axiosClient.get(`${url}/${id}`);
     }
 }
 

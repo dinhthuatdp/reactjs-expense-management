@@ -24,6 +24,19 @@ const ExpenseService = {
             }
         }
         return getAllExpenses(params);
+    },
+    get: (id) => {
+        const getExpense = async (id) => {
+            try {
+                const response = await expenseApi.get(id);
+                return response;
+            } catch (error) {
+                console.log('Get Expense failed', error);
+                return null;
+            }
+        }
+
+        return getExpense(id);
     }
 }
 

@@ -12,12 +12,20 @@ class GroupInfo extends React.Component {
         }
     }
     render() {
+        let imagesElement = [];
+        if (Array.isArray(this.state.data) &&
+            this.state.type === 'image') {
+            imagesElement = this.state.data.map(x => {
+                console.log('check x', x)
+                return <img key={x} alt='attachment image' className='info-img' src={x} />;
+            });
+        }
         return (
             <div className='group-info'>
                 <div className='text'>{this.state.text}</div>
                 {
                     this.state.type === 'image' ?
-                        <img alt='group image' className='info-img' src={this.state.data} />
+                        <div className='image-list'>{imagesElement}</div>
                         :
                         <div className='info'>{this.state.data}</div>
                 }

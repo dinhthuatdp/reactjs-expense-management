@@ -7,12 +7,15 @@ import GroupInfo from '../../components/GroupInfo';
 import GroupEdit from '../../components/GroupEdit';
 import ExpenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import store from '../../Store/Store';
+import expenseService from '../../services/expenseService';
+import Loading from '../../components/Loading/Loading';
 
 class ExpenseDetails extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             isEdit: false,
             expenseDetails: null
         };
@@ -26,11 +29,37 @@ class ExpenseDetails extends React.Component {
     }
 
     loadData = (id) => {
-        const action = ExpenseActionCreators.getExpenseDetails(id);
-        this.props.expenses(action);
-        this.setState({
-            expenseDetails: store.getState().expenses.expenseDetails
-        })
+        // const action = ExpenseActionCreators.getExpenseDetails(id);
+        // this.props.expenses(action);
+        // this.setState({
+        //     expenseDetails: store.getState().expenses.expenseDetails
+        // })
+        const getExpense = async (id) => {
+            const response = await expenseService.get(id);
+            this.setState({
+                isLoading: false
+            });
+            if (!response) {
+                console.log('Get expense error');
+                return;
+            }
+            if (response.status &&
+                response.status.statusCode !== 200) {
+                console.log('Get expense error:', response.message);
+                return;
+            }
+            console.log('check expense details', response.data);
+            const attachments = response.data.attachments.map(x => {
+                const index = x.indexOf('__');
+                return x.substring(0, index);
+            });
+            console.log('check attachments', attachments)
+            this.setState({
+                expenseDetails: response.data
+            });
+        }
+
+        getExpense(id);
     }
 
     handleOnChangeInputDate = (value) => {
@@ -113,69 +142,72 @@ class ExpenseDetails extends React.Component {
                     </div>
                     <div className='expense-info'>
                         {
-                            this.state.expenseDetails ? (
-                                this.state.isEdit ?
-                                    <>
-                                        <GroupEdit
-                                            type='dropdown'
-                                            text='Type'
-                                            onChange={(e) => this.handleOnChangeInput(e, 'type')}
-                                            data={dropdownData} />
-                                        <GroupEdit
-                                            type='date'
-                                            text='Date'
-                                            onChange={(newValue) => this.handleOnChangeInputDate(newValue)}
-                                            data={this.state.expenseDetails.date} />
-                                        <GroupEdit
-                                            type='text'
-                                            text='Category'
-                                            onChange={(e) => this.handleOnChangeInput(e, 'category')}
-                                            data={this.state.expenseDetails.category} />
-                                        <GroupEdit
-                                            type='text'
-                                            text='Cost'
-                                            onChange={(e) => this.handleOnChangeInput(e, 'cost')}
-                                            data={this.state.expenseDetails.cost} />
-                                        <GroupEdit
-                                            type='textarea'
-                                            text='Description'
-                                            onChange={(e) => this.handleOnChangeInput(e, 'description')}
-                                            data={this.state.expenseDetails.description} />
-                                        <GroupEdit
-                                            type='file'
-                                            text='Attachment'
-                                            onChange={(e) => this.handleOnChangeInput(e, 'attachment')}
-                                            data={this.state.expenseDetails.attachment} />
-                                        <div className='edit-actions'>
-                                            <button className='btn'
-                                                onClick={(e) => this.handleSaveClick(e)}>Save</button>
-                                            <button className='btn btn-cancel'
-                                                onClick={(e) => this.handleCancelClick(e)}>Cancel</button>
-                                        </div>
-                                    </>
-                                    : <>
-                                        <GroupInfo
-                                            text='Type'
-                                            data={this.state.expenseDetails.type} />
-                                        <GroupInfo
-                                            text='Date'
-                                            data={this.state.expenseDetails.date} />
-                                        <GroupInfo
-                                            text='Category'
-                                            data={this.state.expenseDetails.category} />
-                                        <GroupInfo
-                                            text='Cost'
-                                            data={this.state.expenseDetails.cost} />
-                                        <GroupInfo
-                                            text='Description'
-                                            data={this.state.expenseDetails.description} />
-                                        <GroupInfo
-                                            type='image'
-                                            text='Attachment'
-                                            data={this.state.expenseDetails.attachment} />
-                                    </>
-                            ) : (
-                                    <div>No data display</div>
+                            this.state.isLoading ? <Loading />
+                                : (
+                                    this.state.expenseDetails ? (
+                                        this.state.isEdit ?
+                                            <>
+                                                <GroupEdit
+                                                    type='dropdown'
+                                                    text='Type'
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'type')}
+                                                    data={dropdownData} />
+                                                <GroupEdit
+                                                    type='date'
+                                                    text='Date'
+                                                    onChange={(newValue) => this.handleOnChangeInputDate(newValue)}
+                                                    data={this.state.expenseDetails.date} />
+                                                <GroupEdit
+                                                    type='text'
+                                                    text='Category'
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'category')}
+                                                    data={this.state.expenseDetails.category} />
+                                                <GroupEdit
+                                                    type='text'
+                                                    text='Cost'
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'cost')}
+                                                    data={this.state.expenseDetails.cost} />
+                                                <GroupEdit
+                                                    type='textarea'
+                                                    text='Description'
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'description')}
+                                                    data={this.state.expenseDetails.description} />
+                                                <GroupEdit
+                                                    type='file'
+                                                    text='Attachment'
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'attachment')}
+                                                    data={this.state.expenseDetails.attachment} />
+                                                <div className='edit-actions'>
+                                                    <button className='btn'
+                                                        onClick={(e) => this.handleSaveClick(e)}>Save</button>
+                                                    <button className='btn btn-cancel'
+                                                        onClick={(e) => this.handleCancelClick(e)}>Cancel</button>
+                                                </div>
+                                            </>
+                                            : <>
+                                                <GroupInfo
+                                                    text='Type'
+                                                    data={this.state.expenseDetails.type} />
+                                                <GroupInfo
+                                                    text='Date'
+                                                    data={this.state.expenseDetails.date} />
+                                                <GroupInfo
+                                                    text='Category'
+                                                    data={this.state.expenseDetails.category} />
+                                                <GroupInfo
+                                                    text='Cost'
+                                                    data={this.state.expenseDetails.cost} />
+                                                <GroupInfo
+                                                    text='Description'
+                                                    data={this.state.expenseDetails.description} />
+                                                <GroupInfo
+                                                    type='image'
+                                                    text='Attachment'
+                                                    data={this.state.expenseDetails.attachments} />
+                                            </>
+                                    ) : (
+                                            <div>No data display</div>
+                                        )
                                 )
                         }
                     </div>
