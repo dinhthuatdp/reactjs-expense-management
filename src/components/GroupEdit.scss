@@ -5,6 +5,11 @@
   align-items: flex-start;
   margin: 10px 0;
 
+  .file-img-list {
+    display: flex;
+    gap: 0.5rem;
+  }
+
   .text-input {
     padding: 0.5rem;
   }

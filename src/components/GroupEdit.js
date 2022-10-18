@@ -38,9 +38,20 @@ class GroupEdit extends React.Component {
                 value={this.props.data.data}
                 onChange={(e) => this.onChangeDropdownInput(e)} />
         } else if (this.props.type === 'file') {
+            let imageElements = [];
+            if (Array.isArray(this.props.data)) {
+                imageElements = this.props.data.map(x => {
+                    return <img className='file-img' key={x} src={x} />;
+                })
+            }
             inputElement = <><input type={this.props.type}
+                multiple
                 onChange={(e) => this.onChangeInput(e)} />
-                <img className='file-img' src={this.props.data} />
+                {
+                    Array.isArray(this.props.data) ? (<div className='file-img-list'>{imageElements}</div>)
+                        : (<img className='file-img' src={this.props.data} />)
+                }
+
             </>;
         } else {
             inputElement = <input className='text-input' type={this.props.type}

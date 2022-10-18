@@ -9,6 +9,8 @@ import ExpenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import store from '../../Store/Store';
 import expenseService from '../../services/expenseService';
 import Loading from '../../components/Loading/Loading';
+import categoryService from '../../services/categoryService';
+import expenseTypeService from '../../services/expenseTypeService';
 
 class ExpenseDetails extends React.Component {
 
@@ -17,18 +19,74 @@ class ExpenseDetails extends React.Component {
         this.state = {
             isLoading: true,
             isEdit: false,
-            expenseDetails: null
+            expenseDetails: null,
+            categories: [],
+            dropdownData: []
         };
     }
 
-    componentDidMount() {
-        this.loadData(this.props.params.id);
+    async componentDidMount() {
+        await this.loadData(this.props.params.id);
+        await this.getCategories();
+        await this.getAllExpenseTypes();
         this.setState({
             isEdit: this.props.location.state.isEdit
         })
     }
 
-    loadData = (id) => {
+    getCategories = async () => {
+        const response = await categoryService.getAll();
+        if (!response) {
+            console.log('Get All category error');
+            return;
+        }
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Get All category error:', response.message)
+            return;
+        }
+        if (response.data) {
+            let data = [];
+            response.data.forEach(x => {
+                data.push({
+                    value: x.id,
+                    displayValue: x.name
+                });
+            });
+            this.setState({
+                categories: data
+            });
+        }
+    }
+    getAllExpenseTypes = async () => {
+        const response = await expenseTypeService.getAll();
+
+        if (!response) {
+            console.log('Get All expense type error');
+            return;
+        }
+        if (response.status &&
+            response.status.statusCode !== 200) {
+            console.log('Get all expense type error:', response.message)
+            return;
+        }
+        if (response.data &&
+            response.data.expenseTypes &&
+            response.data.expenseTypes.length > 0) {
+            let data = [];
+            response.data.expenseTypes.forEach(x => {
+                data.push({
+                    value: x.id,
+                    displayValue: x.name
+                })
+            });
+            this.setState({
+                dropdownData: data
+            });
+        }
+    }
+
+    loadData = async (id) => {
         // const action = ExpenseActionCreators.getExpenseDetails(id);
         // this.props.expenses(action);
         // this.setState({
@@ -48,18 +106,12 @@ class ExpenseDetails extends React.Component {
                 console.log('Get expense error:', response.message);
                 return;
             }
-            console.log('check expense details', response.data);
-            const attachments = response.data.attachments.map(x => {
-                const index = x.indexOf('__');
-                return x.substring(0, index);
-            });
-            console.log('check attachments', attachments)
             this.setState({
                 expenseDetails: response.data
             });
         }
 
-        getExpense(id);
+        await getExpense(id);
     }
 
     handleOnChangeInputDate = (value) => {
@@ -72,12 +124,21 @@ class ExpenseDetails extends React.Component {
     }
 
     handleOnChangeInput = (e, name) => {
-        this.setState({
-            expenseDetails: {
-                ...this.state.expenseDetails,
-                [name]: e.target.value
-            }
-        });
+        if (name === 'attachments') {
+            this.setState({
+                expenseDetails: {
+                    ...this.state.expenseDetails,
+                    attachments: e.target.files
+                }
+            });
+        } else {
+            this.setState({
+                expenseDetails: {
+                    ...this.state.expenseDetails,
+                    [name]: e.target.value
+                }
+            });
+        }
     }
 
     handleBackClick = (e) => {
@@ -99,35 +160,68 @@ class ExpenseDetails extends React.Component {
         });
     }
 
-    handleSaveClick = (e) => {
+    handleSaveClick = async (e) => {
         e.preventDefault();
-        const action = ExpenseActionCreators.updateExpense({
+        // const action = ExpenseActionCreators.updateExpense({
+        //     id: this.state.expenseDetails.id,
+        //     type: this.state.expenseDetails.type,
+        //     date: this.state.expenseDetails.date,
+        //     cost: this.state.expenseDetails.cost,
+        //     description: this.state.expenseDetails.description,
+        //     category: this.state.expenseDetails.category,
+        //     attachment: this.state.expenseDetails.attachment
+        // });
+        // this.props.expenses(action);
+        const editExpense = async (expense) => {
+            var response = await expenseService.edit(expense);
+
+            if (!response) {
+                console.log('Edit expense error');
+                return;
+            }
+            if (response.status &&
+                response.status.statusCode !== 200) {
+                console.log('Edit expense error:', response.message)
+                return;
+            }
+            console.log('Edit expense success');
+        }
+        const expense = {
             id: this.state.expenseDetails.id,
-            type: this.state.expenseDetails.type,
+            typeID: this.state.expenseDetails.typeID,
             date: this.state.expenseDetails.date,
             cost: this.state.expenseDetails.cost,
             description: this.state.expenseDetails.description,
-            category: this.state.expenseDetails.category,
-            attachment: this.state.expenseDetails.attachment
-        });
-        this.props.expenses(action);
+            categoryID: this.state.expenseDetails.categoryID,
+            attachments: this.state.expenseDetails.attachments
+        }
+        console.log('check expense edit', expense)
+        await editExpense(expense);
+        await this.loadData(expense.id);
+        console.log('check state xxxxx', this.state.expenseDetails)
         this.setState({
             isEdit: !this.state.isEdit
         });
     }
     render() {
+        let dropdownDataCategories = null;
         let dropdownData = null;
         if (this.state.expenseDetails) {
             dropdownData = {
-                data: this.state.expenseDetails.type,
-                dataList: [{
-                    value: 'incoming',
-                    displayValue: 'Incoming'
-                },
-                {
-                    value: 'spending',
-                    displayValue: 'Spending'
-                }]
+                data: this.state.expenseDetails.typeID,
+                dataList: this.state.dropdownData
+            }
+            dropdownDataCategories = {
+                data: this.state.expenseDetails.categoryID,
+                dataList: this.state.categories
+                // dataList: [{
+                //     value: 'incoming',
+                //     displayValue: 'Incoming'
+                // },
+                // {
+                //     value: 'spending',
+                //     displayValue: 'Spending'
+                // }]
             }
         }
         return (
@@ -150,7 +244,7 @@ class ExpenseDetails extends React.Component {
                                                 <GroupEdit
                                                     type='dropdown'
                                                     text='Type'
-                                                    onChange={(e) => this.handleOnChangeInput(e, 'type')}
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'typeID')}
                                                     data={dropdownData} />
                                                 <GroupEdit
                                                     type='date'
@@ -158,10 +252,10 @@ class ExpenseDetails extends React.Component {
                                                     onChange={(newValue) => this.handleOnChangeInputDate(newValue)}
                                                     data={this.state.expenseDetails.date} />
                                                 <GroupEdit
-                                                    type='text'
+                                                    type='dropdown'
                                                     text='Category'
-                                                    onChange={(e) => this.handleOnChangeInput(e, 'category')}
-                                                    data={this.state.expenseDetails.category} />
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'categoryID')}
+                                                    data={dropdownDataCategories} />
                                                 <GroupEdit
                                                     type='text'
                                                     text='Cost'
@@ -175,8 +269,8 @@ class ExpenseDetails extends React.Component {
                                                 <GroupEdit
                                                     type='file'
                                                     text='Attachment'
-                                                    onChange={(e) => this.handleOnChangeInput(e, 'attachment')}
-                                                    data={this.state.expenseDetails.attachment} />
+                                                    onChange={(e) => this.handleOnChangeInput(e, 'attachments')}
+                                                    data={this.state.expenseDetails.attachments} />
                                                 <div className='edit-actions'>
                                                     <button className='btn'
                                                         onClick={(e) => this.handleSaveClick(e)}>Save</button>

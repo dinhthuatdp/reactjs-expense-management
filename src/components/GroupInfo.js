@@ -16,7 +16,6 @@ class GroupInfo extends React.Component {
         if (Array.isArray(this.state.data) &&
             this.state.type === 'image') {
             imagesElement = this.state.data.map(x => {
-                console.log('check x', x)
                 return <img key={x} alt='attachment image' className='info-img' src={x} />;
             });
         }

@@ -37,7 +37,19 @@ const ExpenseService = {
         }
 
         return getExpense(id);
-    }
+    },
+    edit: (expense) => {
+        const editExpense = async (expense) => {
+            try {
+                const response = await expenseApi.edit(expense);
+                return response;
+            } catch (error) {
+                console.log('Edit Expense failed', error);
+                return null;
+            }
+        }
+        return editExpense(expense);
+    },
 }
 
 export default ExpenseService;
