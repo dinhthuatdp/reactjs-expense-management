@@ -91,11 +91,12 @@ class Home extends React.Component {
                                             this.state.commonList && (
                                                 this.state.commonList.map(x => {
                                                     return <RowGroup
+                                                        key={x.categoryName}
+                                                        borderColor='#009900'
                                                         title={x.categoryName}
                                                         headers={headers}
                                                         data={[x.passAverage, x.thisMonth, x.spentExtra]} />;
                                                 })
-
                                             )
                                         }
                                     </div>

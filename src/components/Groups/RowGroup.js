@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import './RowGroup.scss';
 
@@ -17,7 +18,7 @@ class RowGroup extends React.Component {
         }
         if (this.props.data) {
             data = this.props.data.map(x => {
-                return <span key={x}>{x}</span>
+                return <span key={uuidv4()}>{x}</span>
             });
         }
         return (
