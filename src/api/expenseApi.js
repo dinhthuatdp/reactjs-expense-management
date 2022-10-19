@@ -43,6 +43,10 @@ const ExpenseApi = {
     delete: (id) => {
         axiosClient.defaults.baseURL = baseUrl;
         return axiosClient.delete(`${url}/${id}`);
+    },
+    getSnapshot: () => {
+        axiosClient.defaults.baseURL = baseUrl;
+        return axiosClient.get(`${url}/snapshot`);
     }
 }
 

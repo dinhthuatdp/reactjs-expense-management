@@ -61,6 +61,18 @@ const ExpenseService = {
             }
         }
         return deleteExpense(id);
+    },
+    getSnapshot: () => {
+        const getSnapshot = async () => {
+            try {
+                const response = await expenseApi.getSnapshot();
+                return response;
+            } catch (error) {
+                console.log('Get snapshot failed', error);
+                return null;
+            }
+        }
+        return getSnapshot();
     }
 }
 
