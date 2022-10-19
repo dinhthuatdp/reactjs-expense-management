@@ -1,4 +1,5 @@
 @import "../../Styles/variables";
+@import "../../Styles/Common.scss";
 
 .create-form {
   position: absolute;
@@ -40,16 +41,6 @@
 
     button {
       width: 6rem;
-    }
-
-    .btn-cancel {
-      background-color: $white-color;
-      border: none;
-      padding: 1rem;
-      border-radius: 0.2rem;
-      color: $black-color;
-      cursor: pointer;
-      border: 1px solid $border-color;
     }
   }
   .input {

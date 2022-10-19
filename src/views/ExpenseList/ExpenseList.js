@@ -14,6 +14,7 @@ import expenseActionCreators from '../../Store/Actions/ExpenseActionCreators';
 import expenseService from '../../services/expenseService';
 import Loading from '../../components/Loading/Loading';
 import Paging from '../../components/Paging/Paging';
+import ConfirmPopup from '../../components/Popups/ConfirmPopup';
 
 class ExpenseList extends React.Component {
 
@@ -21,8 +22,10 @@ class ExpenseList extends React.Component {
         super(props);
         this.state = {
             searchValue: '',
+            deleteId: '',
             dataList: [],
             isShow: false,
+            isShowDelete: false,
             isLoading: true,
             pagination: {
                 pageNumber: 1,
@@ -153,8 +156,15 @@ class ExpenseList extends React.Component {
     deleteOnClick = async (id) => {
         // const action = expenseActionCreators.deleteExpense(id);
         // this.props.expenses(action);
-        console.log('check delete ', id)
-        await this.deleteExpense(id);
+        this.setState({
+            isShowDelete: true,
+            deleteId: id
+        });
+    }
+
+    handleOnDeleteOk = async (e) => {
+        this.setState({ isShowDelete: false });
+        await this.deleteExpense(this.state.deleteId);
         await this.loadData(this.state.pagination.pageNumber, this.state.pagination.pageSize);
     }
 
@@ -179,6 +189,10 @@ class ExpenseList extends React.Component {
                         handleCancelClick={this.handleAddExpense} />)
                 }
                 <div className='expenses-containers'>
+                    <ConfirmPopup
+                        onCancel={(e) => this.setState({ isShowDelete: false, deleteId: '' })}
+                        onOk={(e) => this.handleOnDeleteOk(e)}
+                        isShow={this.state.isShowDelete} />
                     <div className='expenses-title'>
                         {t('label.personalExpenseManagement')}
                     </div>

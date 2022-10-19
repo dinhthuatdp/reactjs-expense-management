@@ -28,7 +28,15 @@ $green-color: green;
   text-transform: uppercase;
   cursor: pointer;
 }
-
+.btn-cancel {
+  background-color: $white-color;
+  border: none;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  color: $black-color;
+  cursor: pointer;
+  border: 1px solid $border-color;
+}
 .btn-create {
   background-color: $btn-create-color;
   border: none;
